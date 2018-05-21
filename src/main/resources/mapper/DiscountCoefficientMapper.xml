@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.DiscountCoefficientMapper">
+	<resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.discountcoefficient" id="disMap">
+		<id column="discountTieId" property="discountTieId" jdbcType="VARCHAR"/>
+		<result column="discountTie" property="discountTie" jdbcType="VARCHAR"/>
+        <result column="startTime" property="startTime" jdbcType="VARCHAR"/>
+        <result column="endTime" property="endTime" jdbcType="VARCHAR"/>
+        <result column="operatorID" property="operatorID" jdbcType="VARCHAR"/>
+        <result column="createPer" property="createPer" jdbcType="VARCHAR"/>
+        <result column="updatePer" property="updatePer" jdbcType="VARCHAR"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="modifyTime" property="modifyTime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	
+	<sql id="select_discoeff">
+		select discountTieId,
+		discountTie,
+		startTime,
+		endTime,
+		operatorID,
+		createPer,
+		updatePer,
+		createTime,
+		modifyTime from t_business_discountcoefficient
+	</sql>
+	
+	<select id="findByPage" resultMap="disMap">
+		<include refid="select_discoeff"></include>
+		<where>
+			<if test="operatorID !=null and operatorID !=''">
+				operatorID=#{operatorID}
+			</if>
+		</where>
+		order by modifyTime desc
+	</select>
+	
+	
+	
+	<select id="findByCount" resultType="Long">
+		select count(*) from t_business_discountcoefficient
+		<where>
+			<if test="operatorID !=null and operatorID !=''">
+				operatorID=#{operatorID}
+			</if>
+		</where>
+	</select>
+	
+	
+	
+	<select id="findByAll" resultMap="disMap">
+		<include refid="select_discoeff"></include>
+		<where>
+			<if test="operatorID !=null and operatorID !=''">
+				operatorID=#{operatorID}
+			</if>
+		</where>
+	</select>
+	
+	
+	
+	<select id="findById" resultMap="disMap">
+		<include refid="select_discoeff"></include>
+		<where>
+			<if test="discountTieId !=null and discountTieId !=''">
+				discountTieId=#{discountTieId}
+			</if>
+		</where>
+	</select>
+	
+	
+	<!-- <select id="findByExceptId" resultMap="disMap">
+		<include refid="select_discoeff"></include>
+		<where>
+			<if test="discountTieId !=null and discountTieId !=''">
+				discountTieId!=#{discountTieId}
+			</if>
+		</where>
+	</select> -->
+	
+	
+	
+	<insert id="addDiscountCoefficient" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.discountcoefficient">
+		insert into t_business_discountcoefficient (discountTieId,
+		discountTie,
+		startTime,
+		endTime,
+		operatorID,
+		createPer,
+		updatePer,
+		createTime,
+		modifyTime) values (#{discountTieId},
+		#{discountTie},
+		#{startTime},
+		#{endTime},
+		#{operatorID},
+		#{createPer},
+		#{updatePer},
+		#{createTime},
+		#{modifyTime})
+	</insert>
+	
+	
+	
+	<update id="updateDiscountCoefficient" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.discountcoefficient">
+		update t_business_discountcoefficient
+		<set>
+			<if test="discountTie !=null and discountTie !=''">
+				discountTie=#{discountTie},
+			</if>
+			<if test="startTime !=null and startTime !=''">
+				startTime=#{startTime},
+			</if>
+			<if test="endTime !=null and endTime !=''">
+				endTime=#{endTime},
+			</if>
+			<if test="operatorID !=null and operatorID !=''">
+				operatorID=#{operatorID},
+			</if>
+			<if test="createPer !=null and createPer !=''">
+				createPer=#{createPer},
+			</if>
+			<if test="updatePer !=null and updatePer !=''">
+				updatePer=#{updatePer},
+			</if>
+			<if test="createTime !=null">
+				createTime=#{createTime},
+			</if>
+			<if test="modifyTime !=null">
+				modifyTime=#{modifyTime}
+			</if>
+		</set>
+		<where>
+			<if test="discountTieId !=null and discountTieId !=''">
+				discountTieId=#{discountTieId}
+			</if>
+		</where>
+	</update>
+	
+	
+	
+	<delete id="deleteDiscountCoefficient" parameterType="java.lang.String">
+		delete from t_business_discountcoefficient
+		<where>
+			<if test="discountTieId !=null and discountTieId !=''">
+				discountTieId=#{discountTieId}
+			</if>
+		</where>
+	</delete>
+	
+</mapper>

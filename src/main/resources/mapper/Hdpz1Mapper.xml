@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.Hdpz1Mapper">
+  <resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.Hdpz1" id="hdpz1Map">
+		<id column="id" property="id" jdbcType="INTEGER" />
+
+		<result column="tier" property="tier" jdbcType="VARCHAR" />
+		
+		<result column="goodsType" property="goodsType" jdbcType="VARCHAR" />
+		
+		<result column="goodsNum" property="goodsNum" jdbcType="VARCHAR" />
+		
+		<result column="machCode" property="machCode" jdbcType="VARCHAR" />
+		
+  </resultMap>
+  <insert id="save" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.Hdpz1">
+     insert into tb_business_hdpz1(tier,goodsType,goodsNum,machCode)values(#{tier},#{goodsType},#{goodsNum},#{machCode})
+  </insert>
+  
+  <delete id="deleteHdpz1" parameterType="String">
+		delete from tb_business_hdpz1 where machCode=#{machCode}
+  </delete>
+
+  <select id="getHdpz1ByMachCode" resultMap="hdpz1Map">
+      select * from tb_business_hdpz1 where machCode=#{machCode}
+  </select>
+  
+  <update id="updateHdpz1" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.Hdpz1">
+		update tb_business_hdpz1 set tier=#{tier},goodsType=#{goodsType},goodsNum=#{goodsNum},machCode=#{machCode},id=#{id} where id=#{id}
+  </update>
+  
+  <select id="getSize1" resultType="int" parameterType="String">
+        select count(*) from tb_business_hdpz1 where machCode=#{machCode} and goodsType='1/4'
+  </select>
+  
+  <select id="getSize2" resultType="int" parameterType="String">
+        select count(*) from tb_business_hdpz1 where machCode=#{machCode} and goodsType='1/8'
+  </select>
+  
+  <select id="getSize3" resultType="int" parameterType="String">
+        select count(*) from tb_business_hdpz1 where machCode=#{machCode} and goodsType='1/12'
+  </select>
+  
+  <select id="getSizesz1" resultType="int" parameterType="String">
+        select count(*) from tb_business_hdpz1 where machCode=#{machCode} and goodsType='100'
+  </select>
+  
+  <select id="getSizesz2" resultType="int" parameterType="String">
+        select count(*) from tb_business_hdpz1 where machCode=#{machCode} and goodsType='80'
+  </select>
+  
+  <select id="getSizesz3" resultType="int" parameterType="String">
+        select count(*) from tb_business_hdpz1 where machCode=#{machCode} and goodsType='60'
+  </select>
+  
+  <select id="getTier1" resultType="String" parameterType="String">
+        select tier from tb_business_hdpz1 where machCode=#{machCode} and goodsType='1/4'
+  </select>
+  
+  <select id="getTier2" resultType="String" parameterType="String">
+        select tier from tb_business_hdpz1 where machCode=#{machCode} and goodsType='1/8'
+  </select>
+  
+  <select id="getTier3" resultType="String" parameterType="String">
+        select tier from tb_business_hdpz1 where machCode=#{machCode} and goodsType='1/12'
+  </select>
+  
+  <select id="getTier1sz" resultType="String" parameterType="String">
+        select tier from tb_business_hdpz1 where machCode=#{machCode} and goodsType='100'
+  </select>
+  
+  <select id="getTier2sz" resultType="String" parameterType="String">
+        select tier from tb_business_hdpz1 where machCode=#{machCode} and goodsType='80'
+  </select>
+  
+  <select id="getTier3sz" resultType="String" parameterType="String">
+        select tier from tb_business_hdpz1 where machCode=#{machCode} and goodsType='60'
+  </select>
+  
+</mapper>

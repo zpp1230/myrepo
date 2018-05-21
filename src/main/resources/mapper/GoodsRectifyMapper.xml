@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.GoodsRectifyMapper">
+	<resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.GoodsRectify" id="GoodsRectifyMap">
+		<id column="rectifyId" property="rectifyId" jdbcType="BIGINT"/>
+        <result column="waresId" property="waresId" jdbcType="VARCHAR"/>
+        <result column="waresName" property="waresName" jdbcType="VARCHAR"/>
+        <result column="cargoDatan" property="cargoDatan" jdbcType="VARCHAR"/>
+        <result column="isPastdue" property="isPastdue" jdbcType="VARCHAR"/>
+        <result column="deviceId" property="deviceId" jdbcType="VARCHAR"/>
+        <result column="beState" property="beState" jdbcType="VARCHAR"/>
+        <result column="isPastd" property="isPastd" jdbcType="INTEGER"/>
+	</resultMap>
+	
+	
+	<select id="findByMoch" resultMap="GoodsRectifyMap">
+		select rectifyId,waresId,waresName,cargoDatan,isPastdue,deviceId,beState,isPastd from t_business_goodsRectify
+		<where>
+			<if test="deviceId !=null and deviceId !=''">
+				deviceId=#{deviceId}
+			</if>
+			and beState="OPEN"
+		</where>
+		ORDER BY isPastd desc
+	</select>
+	
+	
+	<select id="findByParam" resultMap="GoodsRectifyMap">
+		select rectifyId,waresId,waresName,cargoDatan,isPastdue,deviceId,beState,isPastd from t_business_goodsRectify
+		<where>
+			<if test="deviceId !=null and deviceId !=''">
+				deviceId=#{deviceId}
+			</if>
+			<if test="cargoDatan !=null and cargoDatan !=''">
+				and cargoDatan=#{cargoDatan}
+			</if>
+			and beState="OPEN"
+		</where>
+	</select>
+	
+	
+	
+	<select id="findByParamIsPastdOne" resultMap="GoodsRectifyMap">
+		select rectifyId,waresId,waresName,cargoDatan,isPastdue,deviceId,beState,isPastd from t_business_goodsRectify
+		<where>
+			<if test="deviceId !=null and deviceId !=''">
+				deviceId=#{deviceId}
+			</if>
+			<if test="cargoDatan !=null and cargoDatan !=''">
+				and cargoDatan=#{cargoDatan}
+			</if>
+			and beState="OPEN" and isPastd=1
+		</where>
+	</select>
+	
+	
+	<select id="findByParamIsPastdO" resultMap="GoodsRectifyMap">
+		select rectifyId,waresId,waresName,cargoDatan,isPastdue,deviceId,beState,isPastd from t_business_goodsRectify
+		<where>
+			<if test="deviceId !=null and deviceId !=''">
+				deviceId=#{deviceId}
+			</if>
+			<if test="cargoDatan !=null and cargoDatan !=''">
+				and cargoDatan=#{cargoDatan}
+			</if>
+			and beState="OPEN" and isPastd=0
+		</where>
+	</select>
+	
+	
+	
+	<insert id="addGoodsRectify" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.GoodsRectify">
+		insert into t_business_goodsRectify (waresId,
+		waresName,
+		cargoDatan,
+		isPastdue,
+		deviceId,
+		beState,
+		isPastd) values (#{waresId},
+		#{waresName},
+		#{cargoDatan},
+		#{isPastdue},
+		#{deviceId},
+		#{beState},
+		#{isPastd})
+	</insert>
+	
+	
+	<update id="updateGoodsRectify" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.GoodsRectify">
+		update t_business_goodsRectify
+		<set>
+			<if test="waresId !=null and waresId !=''">
+				waresId=#{waresId},
+			</if>
+			<if test="waresName !=null and waresName !=''">
+				waresName=#{waresName},
+			</if>
+			<if test="cargoDatan !=null and cargoDatan !=''">
+				cargoDatan=#{cargoDatan},
+			</if>
+			<if test="isPastdue !=null and isPastdue !=''">
+				isPastdue=#{isPastdue},
+			</if>
+			<if test="deviceId !=null and deviceId !=''">
+				deviceId=#{deviceId},
+			</if>
+			<if test="beState !=null and beState !=''">
+				beState=#{beState},
+			</if>
+			isPastd=#{isPastd}
+		</set>
+		<where>
+			rectifyId=#{rectifyId}
+		</where>
+	</update>
+</mapper>

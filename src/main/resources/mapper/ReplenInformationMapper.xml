@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.ReplenInformationMapper">
+	<resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.ReplenInformation" id="ReplenInformationMap">
+		<id column="replenishId" property="replenishId" jdbcType="BIGINT"/>
+        <result column="goodsId" property="goodsId" jdbcType="VARCHAR"/>
+        <result column="goodsName" property="goodsName" jdbcType="VARCHAR"/>
+        <result column="cargoData" property="cargoData" jdbcType="VARCHAR"/>
+        <result column="machCode" property="machCode" jdbcType="VARCHAR"/>
+        <result column="isExist" property="isExist" jdbcType="INTEGER"/>
+        <result column="beState" property="beState" jdbcType="VARCHAR"/>
+        <result column="cargoType" property="cargoType" jdbcType="VARCHAR"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	
+	<select id="findByMachCode" resultMap="ReplenInformationMap">
+		select replenishId,goodsId,goodsName,cargoData,machCode,isExist,beState,cargoType,createTime,updateTime from tb_business_replenInformation
+		<where>
+			<if test="machCode !=null and machCode !=''">
+				machCode=#{machCode}
+			</if>
+			and beState="OPEN"
+		</where>
+	</select>
+	
+	
+	
+	<select id="findByMachCodeAndCargo" resultMap="ReplenInformationMap">
+		select replenishId,goodsId,goodsName,cargoData,machCode,isExist,beState,cargoType,createTime,updateTime from tb_business_replenInformation
+		<where>
+			<if test="machCode !=null and machCode !=''">
+				machCode=#{machCode}
+			</if>
+			<if test="cargoData !=null and cargoData !=''">
+				and cargoData=#{cargoData}
+			</if>
+			and beState="OPEN"
+		</where>
+	</select>
+	
+	
+	<insert id="addReplenInformation" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.ReplenInformation">
+		insert into tb_business_replenInformation (goodsId,
+		goodsName,
+		cargoData,
+		machCode,
+		isExist,
+		beState,
+		createTime,
+		updateTime,
+		cargoType) values (#{goodsId},
+		#{goodsName},
+		#{cargoData},
+		#{machCode},
+		#{isExist},
+		#{beState},
+		#{createTime},
+		#{updateTime},
+		#{cargoType})
+	</insert>
+	
+	
+	<update id="updateReplenInformation" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.ReplenInformation">
+		update tb_business_replenInformation
+		<set>
+			<if test="goodsId !=null and goodsId !=''">
+				goodsId=#{goodsId},
+			</if>
+			<if test="goodsName !=null and goodsName !=''">
+				goodsName=#{goodsName},
+			</if>
+			<if test="cargoData !=null and cargoData !=''">
+				cargoData=#{cargoData},
+			</if>
+			<if test="machCode !=null and machCode !=''">
+				machCode=#{machCode},
+			</if>
+			isExist=#{isExist},
+			<if test="beState !=null and beState !=''">
+				beState=#{beState},
+			</if>
+			<if test="beState !=null and beState !=''">
+				updateTime=#{updateTime},
+			</if>
+			<if test="cargoType !=null and cargoType !=''">
+				cargoType=#{cargoType}
+			</if>
+		</set>
+		<where>
+			replenishId=#{replenishId}
+		</where>
+	</update>
+	
+	
+	<delete id="deleteReplenInformation" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.ReplenInformation">
+		delete from tb_business_replenInformation
+		<where>
+			<if test="machCode !=null and machCode !=''">
+				machCode=#{machCode}
+			</if>
+			and beState="OPEN"
+		</where>
+	</delete>
+</mapper>	

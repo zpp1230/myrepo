@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.SplbMapper">
+
+	<resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.Splb"
+		id="splbMap">
+		<id column="goodsTypeCode" property="goodsTypeCode" jdbcType="VARCHAR" />
+
+		<result column="operatorID" property="operatorID" jdbcType="VARCHAR" />
+
+		<result column="goodsType" property="goodsType" jdbcType="VARCHAR" />
+
+		<result column="createMan" property="createMan" jdbcType="VARCHAR" />
+
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+
+		<result column="changeMan" property="changeMan" jdbcType="VARCHAR" />
+
+		<result column="changeTime" property="changeTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<select id="getSplbByGoodsTypeCode" resultMap="splbMap"
+		parameterType="String">
+		select * from tb_basic_splb where goodsTypeCode=#{goodsTypeCode}
+	</select>
+
+	<insert id="addSplb" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.Splb">
+		insert into
+		tb_basic_splb(operatorID,goodsTypeCode,goodsType,createMan,createTime,changeMan,changeTime)
+		values
+		(#{operatorID},#{goodsTypeCode},#{goodsType},#{createMan},#{createTime},#{changeMan},#{changeTime})
+	</insert>
+
+	<update id="updateSplb" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.Splb">
+		update tb_basic_splb set
+		operatorID=#{operatorID},goodsTypeCode=#{goodsTypeCode},goodsType=#{goodsType},createMan=#{createMan},createTime=#{createTime},changeMan=#{changeMan},changeTime=#{changeTime}
+		where goodsTypeCode=#{goodsTypeCode}
+	</update>
+
+	<select id="find" resultMap="splbMap">
+		select * from tb_basic_splb
+		<where>
+			<if test="goodsType !=null and goodsType !='' ">
+				goodsType like CONCAT('%',#{goodsType},'%')
+			</if>
+			<if test="operatorID !=null and operatorID !='' ">
+				and operatorID = #{operatorID}
+			</if>
+		</where>
+		order by changeTime desc
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+
+	<select id="getTotal" parameterType="String" resultType="Long">
+		select count(*) from tb_basic_splb
+		<where>
+			<if test="goodsType !=null and goodsType !='' ">
+				goodsType like CONCAT('%',#{goodsType},'%')
+			</if>
+			<if test="operatorID !=null and operatorID !='' ">
+				and operatorID = #{operatorID}
+			</if>
+		</where>
+	</select>
+
+
+	<delete id="deleteSplb" parameterType="String">
+		delete from tb_basic_splb where goodsTypeCode=#{goodsTypeCode}
+	</delete>
+
+</mapper>

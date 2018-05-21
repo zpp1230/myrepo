@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.DeviceMasterMapper" >
+  <resultMap id="BaseResultMap" type="com.cn.jf.backstage.dao.bg_dao.entity.DeviceMaster" >
+    <id column="machCode" property="machCode" jdbcType="VARCHAR" />
+    <result column="machName" property="machName" jdbcType="VARCHAR" />
+    <result column="hostIp" property="hostIp" jdbcType="VARCHAR" />
+    <result column="desAddr" property="desAddr" jdbcType="VARCHAR" />
+    <result column="machModel" property="machModel" jdbcType="VARCHAR" />
+    <result column="machModelID" property="machModelID" jdbcType="VARCHAR" />
+    <result column="hostName" property="hostName" jdbcType="VARCHAR" />
+    <result column="storeId" property="storeId" jdbcType="VARCHAR" />
+    <result column="portNum" property="portNum" jdbcType="VARCHAR" />
+    <result column="areaPrefix" property="areaPrefix" jdbcType="VARCHAR" />
+    <result column="routerCode" property="routerCode" jdbcType="VARCHAR" />
+    <result column="macAddr" property="macAddr" jdbcType="VARCHAR" />
+    <result column="monitor" property="monitor" jdbcType="VARCHAR" />
+    <result column="ipc" property="ipc" jdbcType="VARCHAR" />
+    <result column="machType" property="machType" jdbcType="VARCHAR" />
+    <result column="machOwner" property="machOwner" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="TIMESTAMP" />
+    <result column="cooperationMode" property="cooperationMode" jdbcType="VARCHAR" />
+    <result column="operateCompany" property="operateCompany" jdbcType="VARCHAR" />
+    <result column="operatorID" property="operatorID" jdbcType="VARCHAR" />
+    <result column="leaseStartTime" property="leaseStartTime" jdbcType="TIMESTAMP" />
+    <result column="leaseExpireTime" property="leaseExpireTime" jdbcType="TIMESTAMP" />
+    <result column="buyTime" property="buyTime" jdbcType="TIMESTAMP" />
+    <result column="useAddr" property="useAddr" jdbcType="VARCHAR" />
+    <result column="PermaintBy" property="PermaintBy" jdbcType="VARCHAR" />
+    <result column="replenishBy" property="replenishBy" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="updateBy" property="updateBy" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="BaseResultMapOper" type="com.cn.jf.backstage.dao.bg_dao.model.Operator" >
+    <id column="operatorID" property="operatorID" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="BaseResultMapModel" type="com.cn.jf.backstage.dao.bg_dao.model.ModelMasterList" >
+    <id column="modelNum" property="modelNum" jdbcType="VARCHAR" />
+    <result column="model" property="model" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    machCode,
+	machName,
+	hostIp,
+	desAddr,
+	machModel,
+	machModelID,
+	hostName,
+	storeId,
+	portNum,
+	areaPrefix,
+	routerCode,
+	macAddr,
+	monitor,
+	ipc,
+	machType,
+	machOwner,
+	tel,
+	cooperationMode,
+	operateCompany,
+	operatorID,
+	leaseStartTime,
+	leaseExpireTime,
+	buyTime,
+	useAddr,
+	PermaintBy,
+	replenishBy,
+	createTime,
+	createBy,
+	updateTime,
+	updateBy,
+	remark
+  </sql>
+  <sql id="condition" >
+  	<if test="null!=params.machCode and ''!=params.machCode">
+  		and machCode like concat('%',#{params.machCode},'%')
+  	</if>
+  	<if test="null!=params.machModel and ''!=params.machModel">
+  		and machModel like concat('%',#{params.machModel},'%')
+  	</if>
+  	<if test="null!=params.operateCompany and ''!=params.operateCompany">
+  		and operateCompany like concat('%',#{params.operateCompany},'%')
+  	</if>
+  </sql>
+  <select id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  	DELETE FROM tb_basic_devmaster
+    WHERE machCode = #{machCode,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimarayKeyForModel" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.DeviceMaster" >
+    DELETE FROM tb_basic_devmaster
+    WHERE machCode = #{machCode,jdbcType=VARCHAR}
+  </delete>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM tb_basic_devmaster
+    WHERE machCode = #{machCode,jdbcType=VARCHAR}
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" >
+    SELECT COUNT(1) as s FROM tb_basic_devmaster t WHERE t.operatorID in
+   (SELECT b.operPartyID from tb_basic_stafmaster b where b.emplCode=#{params.emplCode}) or 1=(SELECT IF(v.position='aa',1,0) from tb_basic_stafmaster v WHERE v.emplCode=#{params.emplCode})
+    <include refid="condition" />
+  </select>
+  <select id="selectParams" resultMap="BaseResultMap" parameterType="map" >
+  SELECT t.* FROM tb_basic_devmaster t WHERE t.operatorID in
+  (SELECT b.operPartyID from tb_basic_stafmaster b where b.emplCode=#{params.emplCode}) or 1=(SELECT IF(v.position='aa',1,0) from tb_basic_stafmaster v WHERE v.emplCode=#{params.emplCode})
+     <if test="null!=params.machCode and ''!=params.machCode">
+  		and t.machCode like concat('%',#{params.machCode},'%')
+  	</if>
+  	<if test="null!=params.machModel and ''!=params.machModel">
+  		and t.machModel like concat('%',#{params.machModel},'%')
+  	</if>
+  	<if test="null!=params.operateCompany and ''!=params.operateCompany">
+  		and t.operateCompany like concat('%',#{params.operateCompany},'%')
+  	</if>
+    order by t.updateTime desc
+  </select>
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+     FROM tb_basic_devmaster WHERE 1=1 
+    <include refid="condition" />
+  </select>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+     FROM tb_basic_devmaster WHERE 1=1 
+    <include refid="condition" />
+    order by updateTime desc
+  </select>
+  <select id="findByParamsOper" resultMap="BaseResultMapOper">
+      SELECT operatorID,operator FROM tb_basic_yyzd
+  </select>
+  <select id="findByParamsModel" resultMap="BaseResultMapModel">
+      SELECT modelNum,model FROM tb_basic_jxzd
+  </select>
+  <insert id="insert" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.DeviceMaster" >
+    INSERT INTO tb_basic_devmaster (
+        machCode,
+		machName,
+		hostIp,
+		desAddr,
+		machModel,
+		machModelID,
+		hostName,
+		storeId,
+		portNum,
+		areaPrefix,
+		routerCode,
+		macAddr,
+		monitor,
+		ipc,
+		machType,
+		machOwner,
+		tel,
+		cooperationMode,
+		operateCompany,
+		operatorID,
+		leaseStartTime,
+		leaseExpireTime,
+		buyTime,
+		useAddr,
+		PermaintBy,
+		replenishBy,
+		createTime,
+		createBy,
+		updateTime,
+		updateBy,
+		remark
+    )
+    VALUES (
+	    #{machCode,jdbcType=VARCHAR},
+		#{machName,jdbcType=VARCHAR},
+		#{hostIp,jdbcType=VARCHAR},
+		#{desAddr,jdbcType=VARCHAR},
+		#{machModel,jdbcType=VARCHAR},
+		#{machModelID,jdbcType=VARCHAR},
+		
+		#{hostName,jdbcType=VARCHAR},
+		#{storeId,jdbcType=VARCHAR},
+		#{portNum,jdbcType=VARCHAR},
+		#{areaPrefix,jdbcType=VARCHAR},
+		#{routerCode,jdbcType=VARCHAR},
+		#{macAddr,jdbcType=VARCHAR},
+		#{monitor,jdbcType=VARCHAR},
+		#{ipc,jdbcType=VARCHAR},
+		#{machType,jdbcType=VARCHAR},
+		#{machOwner,jdbcType=VARCHAR},
+		#{tel,jdbcType=VARCHAR},
+		#{cooperationMode,jdbcType=VARCHAR},
+		#{operateCompany,jdbcType=VARCHAR},
+		#{operatorID,jdbcType=VARCHAR},
+		
+		#{leaseStartTime,jdbcType=TIMESTAMP},
+		#{leaseExpireTime,jdbcType=TIMESTAMP},
+		#{buyTime,jdbcType=TIMESTAMP},
+		#{useAddr,jdbcType=VARCHAR},
+		#{PermaintBy,jdbcType=VARCHAR},
+		#{replenishBy,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{createBy,jdbcType=VARCHAR},
+		#{updateTime,jdbcType=TIMESTAMP},
+		#{updateBy,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR}
+    )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.DeviceMaster" >
+    UPDATE tb_basic_devmaster
+    SET   
+	    machCode=#{machCode,jdbcType=VARCHAR},
+		machName=#{machName,jdbcType=VARCHAR},
+		hostIp=#{hostIp,jdbcType=VARCHAR},
+		desAddr=#{desAddr,jdbcType=VARCHAR},
+		machModel=#{machModel,jdbcType=VARCHAR},
+		machModelID=#{machModelID,jdbcType=VARCHAR},
+		hostName=#{hostName,jdbcType=VARCHAR},
+		storeId=#{storeId,jdbcType=VARCHAR},
+		portNum=#{portNum,jdbcType=VARCHAR},
+		areaPrefix=#{areaPrefix,jdbcType=VARCHAR},
+		routerCode=#{routerCode,jdbcType=VARCHAR},
+		macAddr=#{macAddr,jdbcType=VARCHAR},
+		monitor=#{monitor,jdbcType=VARCHAR},
+		ipc=#{ipc,jdbcType=VARCHAR},
+		machType=#{machType,jdbcType=VARCHAR},
+		machOwner=#{machOwner,jdbcType=VARCHAR},
+		tel=#{tel,jdbcType=VARCHAR},
+		cooperationMode=#{cooperationMode,jdbcType=VARCHAR},
+		operateCompany=#{operateCompany,jdbcType=VARCHAR},
+		operatorID=#{operatorID,jdbcType=VARCHAR},
+		leaseStartTime=#{leaseStartTime,jdbcType=TIMESTAMP},
+		leaseExpireTime=#{leaseExpireTime,jdbcType=TIMESTAMP},
+		buyTime=#{buyTime,jdbcType=TIMESTAMP},
+		useAddr=#{useAddr,jdbcType=VARCHAR},
+		PermaintBy=#{PermaintBy,jdbcType=VARCHAR},
+		replenishBy=#{replenishBy,jdbcType=VARCHAR},
+		createTime=#{createTime,jdbcType=TIMESTAMP},
+		createBy=#{createBy,jdbcType=VARCHAR},
+		updateTime=#{updateTime,jdbcType=TIMESTAMP},
+		updateBy=#{updateBy,jdbcType=VARCHAR},
+		remark=#{remark,jdbcType=VARCHAR}
+    WHERE machCode = #{machCode,jdbcType=INTEGER}
+  </update>
+</mapper>

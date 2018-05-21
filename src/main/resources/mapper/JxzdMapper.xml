@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.JxzdMapper">
+
+	<resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.Jxzd"
+		id="jxzdMap">
+		<id column="modelNum" property="modelNum" jdbcType="VARCHAR" />
+
+		<result column="model" property="model" jdbcType="VARCHAR" />
+
+		<result column="coolType" property="coolType" jdbcType="VARCHAR" />
+
+		<result column="hotType" property="hotType" jdbcType="VARCHAR" />
+
+		<result column="ipcSize" property="ipcSize" jdbcType="VARCHAR" />
+
+		<result column="os" property="os" jdbcType="VARCHAR" />
+
+		<result column="routerSize" property="routerSize" jdbcType="VARCHAR" />
+
+		<result column="displayer1" property="displayer1" jdbcType="VARCHAR" />
+
+		<result column="displayer2" property="displayer2" jdbcType="VARCHAR" />
+
+		<result column="coinMech" property="coinMech" jdbcType="VARCHAR" />
+
+		<result column="qrcodeScanner" property="qrcodeScanner"
+			jdbcType="VARCHAR" />
+
+		<result column="voltage" property="voltage" jdbcType="VARCHAR" />
+
+		<result column="width" property="width" jdbcType="VARCHAR" />
+
+		<result column="depth" property="depth" jdbcType="VARCHAR" />
+
+		<result column="height" property="height" jdbcType="VARCHAR" />
+
+		<result column="weight" property="weight" jdbcType="VARCHAR" />
+
+		<result column="electricity" property="electricity" jdbcType="VARCHAR" />
+
+		<result column="power" property="power" jdbcType="VARCHAR" />
+
+		<result column="camera" property="camera" jdbcType="VARCHAR" />
+
+		<result column="infrared" property="infrared" jdbcType="VARCHAR" />
+
+		<result column="ozone" property="ozone" jdbcType="VARCHAR" />
+
+		<result column="environment" property="environment" jdbcType="VARCHAR" />
+
+		<result column="temperature" property="temperature" jdbcType="VARCHAR" />
+
+		<result column="humidity" property="humidity" jdbcType="VARCHAR" />
+
+		<result column="noise" property="noise" jdbcType="VARCHAR" />
+
+		<result column="takeWay" property="takeWay" jdbcType="VARCHAR" />
+
+		<result column="takeNum" property="takeNum" jdbcType="VARCHAR" />
+
+		<result column="picture" property="picture" jdbcType="VARCHAR" />
+
+		<result column="goodsSize" property="goodsSize" jdbcType="VARCHAR" />
+
+		<result column="keepDate" property="keepDate" jdbcType="VARCHAR" />
+
+		<result column="createMan" property="createMan" jdbcType="VARCHAR" />
+
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+
+		<result column="changeMan" property="changeMan" jdbcType="VARCHAR" />
+
+		<result column="changeTime" property="changeTime" jdbcType="TIMESTAMP" />
+						
+	</resultMap>
+
+
+	<select id="getJxzdByModelNum" resultMap="jxzdMap"
+		parameterType="String">
+		select * from tb_basic_jxzd where modelNum=#{modelNum}
+	</select>
+
+
+	<insert id="addJxzd" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.Jxzd">
+		insert into
+		tb_basic_jxzd(modelNum,model,coolType,hotType,ipcSize,os,routerSize,displayer1,displayer2,coinMech,qrcodeScanner,voltage,width,depth,height,weight,electricity,power,camera,infrared,ozone,environment,temperature,humidity,noise,takeWay,takeNum,picture,goodsSize,keepDate,createMan,createTime,changeMan,changeTime)values(#{modelNum},#{model},#{coolType},#{hotType},#{ipcSize},#{os},#{routerSize},#{displayer1},#{displayer2},#{coinMech},#{qrcodeScanner},#{voltage},#{width},#{depth},#{height},#{weight},#{electricity},#{power},#{camera},#{infrared},#{ozone},#{environment},#{temperature},#{humidity},#{noise},#{takeWay},#{takeNum},#{picture},#{goodsSize},#{keepDate},#{createMan},#{createTime},#{changeMan},#{changeTime})
+	</insert>
+
+
+	<delete id="deleteJxzd" parameterType="String">
+		delete from tb_basic_jxzd where modelNum=#{modelNum}
+	</delete>
+
+
+	<update id="updateJxzd" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.Jxzd">
+		update tb_basic_jxzd set
+		modelNum=#{modelNum},model=#{model},coolType=#{coolType},hotType=#{hotType},ipcSize=#{ipcSize},os=#{os},routerSize=#{routerSize},displayer1=#{displayer1},displayer2=#{displayer2},coinMech=#{coinMech},qrcodeScanner=#{qrcodeScanner},voltage=#{voltage},width=#{width},depth=#{depth},height=#{height},weight=#{weight},electricity=#{electricity},power=#{power},camera=#{camera},infrared=#{infrared},ozone=#{ozone},environment=#{environment},temperature=#{temperature},humidity=#{humidity},noise=#{noise},takeWay=#{takeWay},takeNum=#{takeNum},picture=#{picture},goodsSize=#{goodsSize},keepDate=#{keepDate},createMan=#{createMan},createTime=#{createTime},changeMan=#{changeMan},changeTime=#{changeTime}
+		where modelNum=#{modelNum}
+	</update>
+
+
+	<select id="find" resultMap="jxzdMap">
+		select * from tb_basic_jxzd
+		<where>
+			<if test="model !=null and model !='' ">
+				model like CONCAT('%',#{model},'%')
+			</if>
+			<if test="coolType !=null and coolType !='' ">
+				and coolType = #{coolType}
+			</if>
+			<if test="hotType !=null and hotType !='' ">
+				and hotType = #{hotType}
+			</if>
+			<if test="environment !=null and environment !='' ">
+				and environment = #{environment}
+			</if>
+		</where>
+		order by changeTime desc
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+
+	<select id="getTotal" parameterType="String" resultType="Long">
+		select count(*) from tb_basic_jxzd
+		<where>
+			<if test="model !=null and model !='' ">
+				model like CONCAT('%',#{model},'%')
+			</if>
+			<if test="coolType !=null and coolType !='' ">
+				and coolType = #{coolType}
+			</if>
+			<if test="hotType !=null and hotType !='' ">
+				and hotType = #{hotType}
+			</if>
+			<if test="environment !=null and environment !='' ">
+				and environment = #{environment}
+			</if>
+		</where>
+	</select>
+
+
+	<select id="selects" resultMap="jxzdMap" parameterType="String">
+		select * from tb_basic_jxzd
+		<where>
+			<if test="model !=null and model !='' ">
+				model like CONCAT('%',#{model},'%')
+			</if>
+			<if test="coolType !=null and coolType !='' ">
+				and coolType = #{coolType}
+			</if>
+			<if test="hotType !=null and hotType !='' ">
+				and hotType = #{hotType}
+			</if>
+			<if test="environment !=null and environment !='' ">
+				and environment = #{environment}
+			</if>
+		</where>
+		order by changeTime desc
+	</select>
+	
+	<select id="searchModels" resultType="String">
+		select model from tb_basic_jxzd
+	</select>
+</mapper>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.Sbzt1Mapper">
+    <resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.Sbzt1"
+		id="sbzt1Map">
+		<id column="machCode" property="machCode" jdbcType="VARCHAR" />
+	
+		<result column="lastTime" property="lastTime" jdbcType="TIMESTAMP" />	
+					
+	</resultMap>
+	
+	<insert id="saveSbzt1" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.Sbzt1">
+		insert into tb_monitor_sbzt1(machCode,lastTime)values(#{machCode},#{lastTime})	
+	</insert>
+	
+	<delete id="deleteSbzt1ByMachCode" parameterType="String">
+		delete from tb_monitor_sbzt1 where machCode=#{machCode}
+	</delete>
+</mapper>

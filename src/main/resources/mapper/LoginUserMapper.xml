@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.LoginUserMapper" >
+  <resultMap id="BaseResultMap" type="com.cn.jf.backstage.dao.bg_dao.entity.StaffMaster" >
+    <id column="emplCode" property="emplCode" jdbcType="VARCHAR" />
+    <result column="emplName" property="emplName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="company" property="company" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="positionName" property="positionName" jdbcType="VARCHAR" />
+    <result column="contPhone" property="contPhone" jdbcType="VARCHAR" />
+    <result column="backupTel" property="backupTel" jdbcType="VARCHAR" />
+    <result column="emerAddr" property="emerAddr" jdbcType="VARCHAR" />
+    <result column="operParty" property="operParty" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="updateBy" property="updateBy" jdbcType="VARCHAR" />
+    <result column="periodValidity" property="periodValidity" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    emplCode,
+	emplName,
+	password,
+	company,
+	position,
+	positionName,
+	contPhone,
+	backupTel,
+	emerAddr,
+	operParty,
+	createTime,
+	createBy,
+	updateTime,
+	updateBy,
+	periodValidity,
+	remark
+  </sql>
+  <sql id="condition" >
+  	<if test="null!=params.emplCode and ''!=params.emplCode">
+  		and emplCode=#{params.emplCode}
+  	</if>
+  </sql>
+  <select id="selectParams" resultMap="BaseResultMap" parameterType="map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM tb_basic_stafmaster WHERE 1=1 
+    <include refid="condition" />
+  </select>
+  <update id="updateByPrimaryKey" parameterType="map" >
+    UPDATE tb_basic_stafmaster
+    SET   
+       password=#{params.password,jdbcType=VARCHAR}
+    WHERE emplCode=#{params.emplCode,jdbcType=VARCHAR}
+  </update>
+</mapper>

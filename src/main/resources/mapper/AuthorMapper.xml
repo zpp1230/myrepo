@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.AuthorMapper" >
+  <resultMap id="BaseResultMap" type="com.cn.jf.backstage.dao.bg_dao.entity.AuthorMaster" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="roleId" property="roleId" jdbcType="INTEGER" />
+    <result column="menuid" property="menuid" jdbcType="VARCHAR" />
+    <result column="add_" property="add_" jdbcType="INTEGER" />
+    <result column="search" property="search" jdbcType="INTEGER" />
+    <result column="update_" property="update_" jdbcType="INTEGER" />
+    <result column="delete_" property="delete_" jdbcType="INTEGER" />
+    <result column="import_" property="import_" jdbcType="INTEGER" />
+    <result column="export_" property="export_" jdbcType="INTEGER"/>
+    <result column="print" property="print" jdbcType="INTEGER" />
+    <result column="menu" property="menu" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="BaseResultMapRole" type="com.cn.jf.backstage.dao.bg_dao.model.Role" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="roleName" property="roleName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="BaseResultMapEmpInfo" type="com.cn.jf.backstage.dao.bg_dao.model.AuthorDem" >
+    <result column="add_" property="add_" jdbcType="INTEGER" />
+    <result column="search" property="search" jdbcType="INTEGER" />
+    <result column="update_" property="update_" jdbcType="INTEGER" />
+    <result column="delete_" property="delete_" jdbcType="INTEGER" />
+    <result column="import_" property="import_" jdbcType="INTEGER" />
+    <result column="export_" property="export_" jdbcType="INTEGER"/>
+    <result column="print" property="print" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id,
+	roleId,
+	menuid,
+	add_,
+	search,
+	update_,
+	delete_,
+	import_,
+	export_,
+	print,
+	menu
+  </sql>
+  <sql id="condition" >
+  	<if test="null!=params.roleId and ''!=params.roleId">
+  		and roleId like concat('%',#{params.roleId},'%')
+  	</if>
+  	<if test="null!=params.menuid and ''!=params.menuid">
+  		and menuid like concat('%',#{params.menuid},'%')
+  	</if>
+  </sql>
+  <select id="selectParams" resultMap="BaseResultMap" parameterType="map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM tb_auth_author WHERE 1=1
+    <include refid="condition" />
+  </select>
+  <select id="serchRole" resultMap="BaseResultMapRole" parameterType="map" >
+    SELECT t.id,t.roleName FROM tb_auth_role t 
+     where t.id not IN(SELECT b.roleId FROM tb_auth_allot b where b.emplCode=#{params.emplCode})
+  </select>
+  <select id="serchRoleAutor" resultMap="BaseResultMapRole" parameterType="map" >
+    SELECT 
+    t.id,
+	t.roleName
+    FROM tb_auth_role t left join  tb_auth_allot b on t.id=b.roleId where  1=1 and b.emplCode=#{params.emplCode}
+  </select>
+  <delete id="deleteByPrimarayKeyForModel" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.AuthorMaster" >
+    DELETE FROM tb_auth_author 
+    WHERE id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <delete id="deleteauthallot" parameterType="map" >
+    DELETE FROM tb_auth_allot 
+    WHERE emplCode = #{params.emplCode}
+  </delete>
+  <insert id="insertauthallot" parameterType="map" >
+    INSERT INTO tb_auth_allot (
+		roleId,
+		emplCode
+    )
+    VALUES (
+      #{params.roleId},
+      #{params.emplCode}
+    )
+  </insert>
+  
+   <select id="selectParamsEmplAutorInfo" resultMap="BaseResultMapEmpInfo" parameterType="map" >
+    select   
+	IF(SUM(t.add_)>0,1,0) as add_,
+	IF(SUM(t.delete_)>0,1,0) as delete_,
+	IF(SUM(t.export_)>0,1,0) as export_,
+	IF(SUM(t.import_)>0,1,0) as import_,
+	IF(SUM(t.print)>0,1,0) as print,
+	IF(SUM(t.update_)>0,1,0) as update_,
+	IF(SUM(t.search)>0,1,0) as search
+	FROM  tb_auth_author t  WHERE  t.roleId in(
+	SELECT a.roleId FROM tb_auth_allot a where a.emplCode=#{params.emplCode})
+	AND t.menuid=#{params.menuid}
+  </select>
+  
+  
+  <delete id="deleteByPrimarayKey" parameterType="map" >
+    DELETE FROM tb_auth_author 
+    WHERE roleId = #{params.roleId}
+  </delete>
+  
+  <update id="updateByPrimaryKey" parameterType="com.cn.jf.backstage.dao.bg_dao.model.AuthorModel" >
+    UPDATE tb_auth_author
+    SET   
+          roleId=#{roleId,jdbcType=INTEGER},
+          menuid=#{menuid,jdbcType=VARCHAR},
+          add_=#{add_,jdbcType=INTEGER},
+          search=#{search,jdbcType=INTEGER},
+          update_=#{update_,jdbcType=INTEGER},
+          delete_=#{delete_,jdbcType=INTEGER},
+          import_=#{import_,jdbcType=INTEGER},
+          export_=#{export_,jdbcType=INTEGER},
+          print=#{print,jdbcType=INTEGER},
+          menu=#{menu,jdbcType=INTEGER}
+    WHERE roleId = #{roleId,jdbcType=INTEGER}  and  menuid = #{menuid,jdbcType=VARCHAR}
+  </update>
+  <insert id="insert" parameterType="com.cn.jf.backstage.dao.bg_dao.model.AuthorModel" >
+    INSERT INTO tb_auth_author (
+		roleId,
+		menuid,
+		add_,
+		search,
+		update_,
+		delete_,
+		import_,
+		export_,
+		print,
+		menu
+    )
+    VALUES (
+      #{roleId,jdbcType=INTEGER},
+      #{menuid,jdbcType=VARCHAR},
+      #{add_,jdbcType=INTEGER},
+      #{search,jdbcType=INTEGER},
+      #{update_,jdbcType=INTEGER},
+      #{delete_,jdbcType=INTEGER},
+      #{import_,jdbcType=INTEGER},
+      #{export_,jdbcType=INTEGER},
+      #{print,jdbcType=INTEGER},
+      #{menu,jdbcType=INTEGER}	
+    )
+  </insert>
+</mapper>

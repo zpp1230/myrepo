@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.StaffMastersMapper">
+
+<resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.StaffMaster" id="staffsMasterMap">    
+    <id column="emplCode" property="emplCode" jdbcType="VARCHAR" />
+    
+    <result column="emplName" property="emplName" jdbcType="VARCHAR" />
+    
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    
+    <result column="company" property="company" jdbcType="VARCHAR" />
+    
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    
+    <result column="positionName" property="positionName" jdbcType="VARCHAR" />
+    
+    <result column="contPhone" property="contPhone" jdbcType="VARCHAR" />
+    
+    <result column="backupTel" property="backupTel" jdbcType="VARCHAR" />
+    
+    <result column="emerAddr" property="emerAddr" jdbcType="VARCHAR" />
+    
+    <result column="operParty" property="operParty" jdbcType="VARCHAR"/>
+    
+    <result column="operPartyID" property="operPartyID" jdbcType="VARCHAR" />
+    
+    <result column="salt" property="salt" jdbcType="VARCHAR" />
+   
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+    
+    <result column="updateBy" property="updateBy" jdbcType="VARCHAR" />
+    
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    
+    <result column="periodValidity" property="periodValidity" jdbcType="TIMESTAMP" />
+    
+  </resultMap>
+  
+  <select id="getOperatorId" parameterType="String" resultType="String">
+     select operPartyID from tb_basic_stafmaster where emplCode=#{emplCode}
+  </select>
+  
+  <select id="getPosition" parameterType="String" resultType="String">
+     select position from tb_basic_stafmaster where emplCode=#{emplCode}
+  </select>
+
+</mapper>

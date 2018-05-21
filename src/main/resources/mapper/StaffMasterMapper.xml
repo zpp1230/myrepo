@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.StaffMasterMapper" >
+  <resultMap id="BaseResultMap" type="com.cn.jf.backstage.dao.bg_dao.entity.StaffMaster" >
+    <id column="emplCode" property="emplCode" jdbcType="VARCHAR" />
+    <result column="emplName" property="emplName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="company" property="company" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="positionName" property="positionName" jdbcType="VARCHAR" />
+    <result column="contPhone" property="contPhone" jdbcType="VARCHAR" />
+    <result column="backupTel" property="backupTel" jdbcType="VARCHAR" />
+    <result column="emerAddr" property="emerAddr" jdbcType="VARCHAR" />
+    <result column="operParty" property="operParty" jdbcType="VARCHAR" />
+    <result column="operPartyID" property="operPartyID" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="updateBy" property="updateBy" jdbcType="VARCHAR" />
+    <result column="periodValidity" property="periodValidity" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    emplCode,
+	emplName,
+	password,
+	company,
+	position,
+	positionName,
+	contPhone,
+	backupTel,
+	emerAddr,
+	operParty,
+	operPartyID,
+	createTime,
+	createBy,
+	updateTime,
+	updateBy,
+	periodValidity,
+	remark
+  </sql>
+  <sql id="condition" >
+  	<if test="null!=params.emplName and ''!=params.emplName">
+  		and emplName like concat('%',#{params.emplName},'%')
+  	</if>
+  	<if test="null!=params.operParty and ''!=params.operParty">
+  		and operParty like concat('%',#{params.operParty},'%')
+  	</if>
+  	<if test="null!=params.positionName and ''!=params.positionName">
+  		and positionName like concat('%',#{params.positionName},'%')
+  	</if>
+  </sql>
+  <select id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  	DELETE FROM tb_basic_stafmaster
+    WHERE emplCode = #{emplCode,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimarayKeyForModel" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.StaffMaster" >
+    DELETE FROM tb_basic_stafmaster
+    WHERE emplCode = #{emplCode,jdbcType=VARCHAR}
+  </delete>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    SELECT 
+    <include refid="Base_Column_List"/>
+    FROM tb_basic_stafmaster
+    WHERE emplCode = #{emplCode,jdbcType=VARCHAR}
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" >
+    SELECT COUNT(1) as s FROM tb_basic_stafmaster WHERE 1=1 
+    <include refid="condition" />
+  </select>
+  <select id="selectParams" resultMap="BaseResultMap" parameterType="map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM tb_basic_stafmaster WHERE 1=1 
+    <include refid="condition" />
+    order by updateTime desc
+  </select>
+  <select id="findByOneParams" resultMap="BaseResultMap" parameterType="map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM tb_basic_stafmaster WHERE  emplCode=#{params.emplCode}
+  </select>
+  
+  <select id="findByParamsPermain" resultMap="BaseResultMap" parameterType="map" >
+    SELECT m.* FROM (SELECT t.* FROM tb_basic_stafmaster t WHERE  t.operPartyID in
+  	(SELECT b.operPartyID from tb_basic_stafmaster b where b.emplCode=#{params.emplCode}) 
+	or 1=(SELECT IF(v.position='aa',1,0) from tb_basic_stafmaster v WHERE v.emplCode=#{params.emplCode})) m where m.position='ac'
+  </select>
+  
+  <select id="findByParamsReplenish" resultMap="BaseResultMap" parameterType="map" >
+    SELECT m.* FROM (SELECT t.* FROM tb_basic_stafmaster t WHERE  t.operPartyID in
+  	(SELECT b.operPartyID from tb_basic_stafmaster b where b.emplCode=#{params.emplCode}) 
+	or 1=(SELECT IF(v.position='aa',1,0) from tb_basic_stafmaster v WHERE v.emplCode=#{params.emplCode})) m where m.position='ad'
+  </select>
+  
+  <select id="selectParam" resultMap="BaseResultMap" parameterType="map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM tb_basic_stafmaster WHERE 1=1 
+    and emplCode like concat('%',#{params.emplCode},'%')
+  </select>
+  <select id="selectCount_1" resultType="java.lang.Integer" >
+    SELECT COUNT(1) as s FROM tb_basic_stafmaster WHERE 1=1 
+    and emplCode like concat('%',#{params.emplCode},'%')
+  </select>
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="map" >
+    SELECT  
+    <include refid="Base_Column_List" />
+     FROM tb_basic_stafmaster WHERE 1=1 
+    <include refid="condition" />
+  </select>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+     FROM tb_basic_stafmaster WHERE 1=1 
+    <include refid="condition" />
+    order by updateTime desc
+  </select>
+  <insert id="insert" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.StaffMaster" >
+    INSERT INTO tb_basic_stafmaster(                                  
+        emplCode,
+		emplName,
+		password,
+		company,
+		position,
+		positionName,
+		contPhone,
+		backupTel,
+		emerAddr,
+		operParty,
+		operPartyID,
+		createTime,
+		createBy,
+		updateTime,
+		updateBy,
+		periodValidity,
+		remark
+    )
+    VALUES (
+      #{emplCode,jdbcType=VARCHAR},
+      #{emplName,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, 
+      #{company,jdbcType=VARCHAR}, 
+      #{position,jdbcType=VARCHAR}, 
+      #{positionName,jdbcType=VARCHAR}, 
+      #{contPhone,jdbcType=VARCHAR}, 
+      #{backupTel,jdbcType=VARCHAR}, 
+      #{emerAddr,jdbcType=VARCHAR}, 
+      #{operParty,jdbcType=VARCHAR}, 
+      #{operPartyID,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP}, 
+      #{createBy,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=VARCHAR}, 
+      #{periodValidity,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR}
+    )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.StaffMaster" >
+    UPDATE tb_basic_stafmaster
+    SET   
+          emplCode=#{emplCode,jdbcType=VARCHAR},
+	      emplName=#{emplName,jdbcType=VARCHAR}, 
+	      company=#{company,jdbcType=VARCHAR}, 
+	      position=#{position,jdbcType=VARCHAR}, 
+	      positionName=#{positionName,jdbcType=VARCHAR}, 
+	      contPhone=#{contPhone,jdbcType=VARCHAR}, 
+	      backupTel=#{backupTel,jdbcType=VARCHAR}, 
+	      emerAddr=#{emerAddr,jdbcType=VARCHAR}, 
+	      operParty=#{operParty,jdbcType=VARCHAR}, 
+	      operPartyID=#{operPartyID,jdbcType=VARCHAR},
+	      createTime=#{createTime,jdbcType=TIMESTAMP}, 
+	      createBy=#{createBy,jdbcType=VARCHAR}, 
+	      updateTime=#{updateTime,jdbcType=TIMESTAMP}, 
+	      updateBy=#{updateBy,jdbcType=VARCHAR}, 
+	      periodValidity=#{periodValidity,jdbcType=TIMESTAMP}, 
+	      remark=#{remark,jdbcType=VARCHAR}
+	      
+    WHERE emplCode = #{emplCode,jdbcType=INTEGER}
+  </update>
+</mapper>

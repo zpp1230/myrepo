@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.GoodsStateMapper">
+	<resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.GoodsState" id="GoodsStateMap">
+		<id column="stateId" property="stateId" jdbcType="BIGINT"/>
+        <result column="goodsId" property="goodsId" jdbcType="VARCHAR"/>
+        <result column="goodsName" property="goodsName" jdbcType="VARCHAR"/>
+        <result column="cargoData" property="cargoData" jdbcType="VARCHAR"/>
+        <result column="cargoType" property="cargoType" jdbcType="VARCHAR"/>
+        <result column="machCode" property="machCode" jdbcType="VARCHAR"/>
+        <result column="expiratDate" property="expiratDate" jdbcType="INTEGER"/>
+        <result column="isExist" property="isExist" jdbcType="INTEGER"/>
+        <result column="reenterDate" property="reenterDate" jdbcType="TIMESTAMP"/>
+        <result column="beState" property="beState" jdbcType="VARCHAR"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	
+	
+	
+	
+	<select id="findByMochAndGoodsID" resultMap="GoodsStateMap">
+		select stateId,goodsId,goodsName,cargoData,cargoType,machCode,expiratDate,isExist,reenterDate,beState,createTime,updateTime from t_business_goodsState
+		<where>
+			<if test="machCode !=null and machCode !=''">
+				machCode=#{machCode}
+			</if>
+			<if test="goodsId !=null and goodsId !=''">
+				and goodsId=#{goodsId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findByMoch" resultMap="GoodsStateMap">
+		select stateId,goodsId,goodsName,cargoData,cargoType,machCode,expiratDate,isExist,reenterDate,beState,createTime,updateTime from t_business_goodsState
+		<where>
+			<if test="machCode !=null and machCode !=''">
+				machCode=#{machCode}
+			</if>
+			<!-- and beState="OPEN" -->
+		</where>
+	</select>
+	
+	
+	<select id="findByMochAndState" resultMap="GoodsStateMap">
+		select stateId,goodsId,goodsName,cargoData,cargoType,machCode,expiratDate,isExist,reenterDate,beState,createTime,updateTime from t_business_goodsState
+		<where>
+			<if test="machCode !=null and machCode !=''">
+				machCode=#{machCode}
+			</if>
+			and isExist=0 <!-- and beState="OPEN"  -->
+		</where>
+	</select>
+	
+	
+	
+	<select id="findByMochAndStateOne" resultMap="GoodsStateMap">
+		select stateId,goodsId,goodsName,cargoData,cargoType,machCode,expiratDate,isExist,reenterDate,beState,createTime,updateTime from t_business_goodsState
+		<where>
+			<if test="machCode !=null and machCode !=''">
+				machCode=#{machCode}
+			</if>
+			and isExist=1 <!-- and beState="OPEN"  -->
+		</where>
+	</select>
+	
+	
+	
+	<select id="findByMochAndStateOneAndGoodsId" resultMap="GoodsStateMap">
+		select stateId,goodsId,goodsName,cargoData,cargoType,machCode,expiratDate,isExist,reenterDate,beState,createTime,updateTime from t_business_goodsState
+		<where>
+			<if test="machCode !=null and machCode !=''">
+				machCode=#{machCode}
+			</if>
+			<if test="goodsId !=null and goodsId !=''">
+				and goodsId=#{goodsId}
+			</if>
+			and isExist=1 <!-- and beState="OPEN"  -->
+		</where>
+	</select>
+	
+	
+	<select id="findByGoodsId" resultMap="GoodsStateMap">
+		select stateId,goodsId,goodsName,cargoData,cargoType,machCode,expiratDate,isExist,reenterDate,beState,createTime,updateTime from t_business_goodsState
+		<where>
+			<if test="goodsId !=null and goodsId !=''">
+				goodsId=#{goodsId}
+			</if>
+			<if test="machCode !=null and machCode !=''">
+				and machCode=#{machCode}
+			</if>
+			and isExist=1
+			<!-- and beState="OPEN" -->
+		</where>
+		order by reenterDate desc
+	</select>
+	
+	
+	<select id="findByParam" resultMap="GoodsStateMap">
+		select stateId,goodsId,goodsName,cargoData,cargoType,machCode,expiratDate,isExist,reenterDate,beState,createTime,updateTime from t_business_goodsState
+		<where>
+			<if test="machCode !=null and machCode !=''">
+				machCode=#{machCode}
+			</if>
+			<if test="cargoData !=null and cargoData !=''">
+				and cargoData=#{cargoData}
+			</if>
+			<!-- and beState="OPEN" -->
+		</where>
+	</select>
+	
+	
+	<insert id="addGoodsState" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.GoodsState">
+		insert into t_business_goodsState (goodsId,
+		goodsName,
+		cargoData,
+		machCode,
+		expiratDate,
+		isExist,
+		reenterDate,
+		beState,
+		createTime,
+		updateTime,
+		cargoType) values (#{goodsId},
+		#{goodsName},
+		#{cargoData},
+		#{machCode},
+		#{expiratDate},
+		#{isExist},
+		#{reenterDate},
+		#{beState},
+		#{createTime},
+		#{updateTime},
+		#{cargoType})
+	</insert>
+	
+	
+	
+	<update id="updateGoodsState" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.GoodsState">
+		update t_business_goodsState
+		<set>
+			<if test="goodsId !=null and goodsId !=''">
+				goodsId=#{goodsId},
+			</if>
+			<if test="goodsName !=null and goodsName !=''">
+				goodsName=#{goodsName},
+			</if>
+			<if test="cargoData !=null and cargoData !=''">
+				cargoData=#{cargoData},
+			</if>
+			<if test="machCode !=null and machCode !=''">
+				machCode=#{machCode},
+			</if>
+			expiratDate=#{expiratDate},
+			isExist=#{isExist},
+			<if test="reenterDate !=null">
+				reenterDate=#{reenterDate},
+			</if>
+			<if test="updateTime !=null">
+				updateTime=#{updateTime},
+			</if>
+			<if test="cargoType !=null and cargoType !=''">
+				cargoType=#{cargoType}
+			</if>
+		</set>
+		<where>
+			stateId=#{stateId}
+		</where>
+	</update>
+	
+	
+	
+	<delete id="deleteGoodsState" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.GoodsState">
+		delete from t_business_goodsState
+		<where>
+			<if test="stateId !=null and stateId !=''">
+				stateId=#{stateId}
+			</if>
+		</where>
+	</delete>
+</mapper>

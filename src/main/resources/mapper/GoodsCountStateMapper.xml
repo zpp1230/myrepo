@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.GoodsCountStateMapper">
+	<resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.GoodsCountState" id="GoodsCountStateMap">
+		<id column="countId" property="countId" jdbcType="BIGINT"/>
+        <result column="goodsName" property="goodsName" jdbcType="VARCHAR"/>
+        <result column="goodsCount" property="goodsCount" jdbcType="VARCHAR"/>
+        <result column="goodsPrice" property="goodsPrice" jdbcType="VARCHAR"/>
+        <result column="cargoData" property="cargoData" jdbcType="VARCHAR"/>
+        <result column="deviceId" property="deviceId" jdbcType="VARCHAR"/>
+        <result column="goodsId" property="goodsId" jdbcType="VARCHAR"/>
+        <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	
+	<sql id="select_goodscountstate">
+		select countId,
+		goodsName,
+		goodsCount,
+		goodsPrice,
+		cargoData,
+		deviceId,
+		goodsId,
+		updateTime from tb_business_goodsCountState
+	</sql>
+	
+	
+	<select id="findByDevId" resultMap="GoodsCountStateMap">
+		<include refid="select_goodscountstate"></include>
+		<where>
+			<if test="deviceId !=null and deviceId !=''">
+				deviceId=#{deviceId}
+			</if>
+		</where>
+	</select>
+	
+	
+	<select id="findByMachAndGoodsId" resultMap="GoodsCountStateMap">
+		<include refid="select_goodscountstate"></include>
+		<where>
+			<if test="deviceId !=null and deviceId !=''">
+				deviceId=#{deviceId}
+			</if>
+			<if test="goodsId !=null and goodsId !=''">
+				and goodsId=#{goodsId}
+			</if>
+		</where>
+	</select>
+	
+	
+	<delete id="deleteGoodsCountState" parameterType="java.lang.String">
+		delete from tb_business_goodsCountState
+		<where>
+			<if test="deviceId !=null and deviceId !=''">
+				deviceId=#{deviceId}
+			</if>
+		</where>
+	</delete>
+	
+	
+	
+	<insert id="addGoodsCountState" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.GoodsCountState">
+		insert into tb_business_goodsCountState (goodsName,
+		goodsCount,
+		goodsPrice,
+		cargoData,
+		deviceId,
+		goodsId,
+		updateTime) values (#{goodsName},
+		#{goodsCount},
+		#{goodsPrice},
+		#{cargoData},
+		#{deviceId},
+		#{goodsId},
+		#{updateTime})
+	</insert>
+	
+	
+	<update id="updateGoodsCountState" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.GoodsCountState">
+		update tb_business_goodsCountState
+		<set>
+			<if test="goodsName !=null and goodsName !=''">
+				goodsName=#{goodsName},
+			</if>
+			<if test="goodsCount !=null and goodsCount !=''">
+				goodsCount=#{goodsCount},
+			</if>
+			<if test="goodsPrice !=null and goodsPrice !=''">
+				goodsPrice=#{goodsPrice},
+			</if>
+			<if test="cargoData !=null and cargoData !=''">
+				cargoData=#{cargoData},
+			</if>
+			<if test="deviceId !=null and deviceId !=''">
+				deviceId=#{deviceId},
+			</if>
+			<if test="goodsId !=null and goodsId !=''">
+				goodsId=#{goodsId}
+			</if>
+		</set>
+		<where>
+			countId=#{countId}
+		</where>
+	</update>
+</mapper>

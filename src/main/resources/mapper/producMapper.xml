@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.GoodsmMapper">
+	<resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.GoodsMaster" id="goodsMap">
+		<id column="waresId" property="waresId" jdbcType="VARCHAR"/>
+		<result column="waresName" property="waresName" jdbcType="VARCHAR"/>
+		<result column="waresPrice" property="waresPrice" jdbcType="DOUBLE"/>
+		<result column="waresImage1" property="waresImage1" jdbcType="VARCHAR"/>
+		<result column="waresImage2" property="waresImage2" jdbcType="VARCHAR"/>
+		<result column="starValue" property="starValue" jdbcType="INTEGER"/>
+		<result column="waresDiscr" property="waresDiscr" jdbcType="VARCHAR"/>
+		<result column="theGoodsModel" property="theGoodsModel" jdbcType="VARCHAR"/>
+		<result column="waresSyno" property="waresSyno" jdbcType="VARCHAR"/>
+		<result column="heatingTime" property="heatingTime" jdbcType="INTEGER"/>
+		<result column="quaGuaPeriod" property="quaGuaPeriod" jdbcType="INTEGER"/>
+		<result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
+		<result column="barCodeNo" property="barCodeNo" jdbcType="VARCHAR"/>
+		<result column="operatorID" property="operatorID" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	
+	<resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.GoodsMaster" id="goodsDataMap">
+		<id column="waresId" property="waresId" jdbcType="VARCHAR"/>
+		<result column="waresName" property="waresName" jdbcType="VARCHAR"/>
+		<result column="operParty" property="operParty" jdbcType="VARCHAR"/>
+		<result column="waresPrice" property="waresPrice" jdbcType="DOUBLE"/>
+		<result column="starValue" property="starValue" jdbcType="INTEGER"/>
+		<result column="quaGuaPeriod" property="quaGuaPeriod" jdbcType="INTEGER"/>
+	</resultMap>
+	
+	
+	
+	<sql id="select_goods">
+		select waresId,
+		waresName,
+		waresPrice,
+		waresImage1,
+		waresImage2,
+		starValue,
+		waresDiscr,
+		theGoodsModel,
+		waresSyno,
+		heatingTime,
+		quaGuaPeriod,
+		updateTime,
+		barCodeNo,
+		operatorID from tb_basic_gdmaster
+	</sql>
+	
+	<select id="findByGoodsId" resultMap="goodsMap">
+		<include refid="select_goods"></include>
+		<where>
+			<if test="waresId !=null and waresId !=''">
+				waresId=#{waresId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findByBarCodeNo" resultMap="goodsMap">
+		<include refid="select_goods"></include>
+		<where>
+			<if test="params.barCodeNo !=null and params.barCodeNo !=''">
+				barCodeNo=#{params.barCodeNo}
+			</if>
+			<if test="params.operatorID !=null and params.operatorID !=''">
+				and operatorID=#{params.operatorID}
+			</if>
+		</where>
+	</select>
+	
+	
+	
+	<select id="findId" resultMap="goodsDataMap">
+		select waresId,waresName from tb_basic_gdmaster
+	</select>
+	
+	<select id="findBywaresId" resultMap="goodsDataMap">
+		select waresId,waresName,operParty,waresPrice,starValue,quaGuaPeriod from tb_basic_gdmaster
+		<where>
+			<if test="waresId !=null and waresId !=''">
+				waresId=#{waresId}
+			</if>
+			<if test="waresName !=null and waresName !=''">
+				and waresName like CONCAT('%',#{waresName},'%')
+			</if>
+		</where>
+	</select>
+	
+	
+	<select id="findById" resultMap="goodsDataMap" parameterType="java.lang.String">
+		select waresId,waresName,operParty,waresPrice,starValue,quaGuaPeriod from tb_basic_gdmaster
+		<where>
+			<if test="waresId !=null and waresId !=''">
+				waresId=#{waresId}
+			</if>
+		</where>
+	</select>
+	
+	
+	<select id="findByPage" resultMap="goodsDataMap">
+		select waresId,waresName,operParty,waresPrice,starValue,quaGuaPeriod from tb_basic_gdmaster
+		<where>
+			<if test="waresId !=null and waresId !=''">
+				waresId like CONCAT('%',#{waresId},'%')
+			</if>
+			<if test="waresName !=null and waresName !=''">
+				and waresName like CONCAT('%',#{waresName},'%')
+			</if>
+		</where>
+		order by updateTime desc
+	</select>
+	
+	
+	<select id="findByCount" resultType="Long">
+		select count(*) from tb_basic_gdmaster
+		<where>
+			<if test="waresId !=null and waresId !=''">
+				waresId like CONCAT('%',#{waresId},'%')
+			</if>
+			<if test="waresName !=null and waresName !=''">
+				and waresName like CONCAT('%',#{waresName},'%')
+			</if>
+		</where>
+	</select>
+	
+	
+	<select id="findByLessParam" resultMap="goodsDataMap">
+		select waresId,waresName,operParty,waresPrice,starValue,quaGuaPeriod from tb_basic_gdmaster
+		<where>
+			<![CDATA[quaGuaPeriod <=1]]>
+		</where>
+	</select>
+	
+	
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.GoodsConfigAssistMapper">
+	<resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.Sppz2" id="Sppz2Map">
+		<id column="id" property="id" jdbcType="INTEGER"/>
+		<result column="goods" property="goods" jdbcType="VARCHAR"/>
+        <result column="number" property="number" jdbcType="VARCHAR"/>
+        <result column="price" property="price" jdbcType="VARCHAR"/>
+        <result column="goodsType" property="goodsType" jdbcType="VARCHAR"/>
+        <result column="machCode" property="machCode" jdbcType="VARCHAR"/>
+        <result column="goodsId" property="goodsId" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	
+	<sql id="select_sppz">
+		select goods,number,price,goodsType,machCode,goodsId from tb_business_sppz2
+	</sql>
+	
+	
+	<select id="findByMachCode" resultMap="Sppz2Map">
+		<include refid="select_sppz"></include>
+		<where>
+			<if test="machCode !=null and machCode !=''">
+				machCode=#{machCode}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findByGoodsId" resultMap="Sppz2Map">
+		<include refid="select_sppz"></include>
+		<where>
+			<if test="goodsId !=null and goodsId !=''">
+				goodsId=#{goodsId}
+			</if>
+		</where>
+	</select>
+</mapper>

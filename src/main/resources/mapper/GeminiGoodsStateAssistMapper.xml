@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.GeminiGoodsStateAssistMapper">
+	<resultMap id="goodsMap" type="com.cn.jf.backstage.dao.bg_dao.entity.GeminiGoodsStateAssist">
+        <id column="stateId" property="stateId" jdbcType="BIGINT"/>
+        <result column="goodsId" property="goodsId" jdbcType="VARCHAR"/>
+        <result column="goodsName" property="goodsName" jdbcType="VARCHAR"/>
+        <result column="barCode" property="barCode" jdbcType="VARCHAR"/>
+        <result column="haveOrnot" property="haveOrnot" jdbcType="INTEGER"/>
+        <result column="productdate" property="productdate" jdbcType="TIMESTAMP"/>
+        <result column="machCode" property="machCode" jdbcType="VARCHAR"/>
+        <result column="macAddr" property="macAddr" jdbcType="VARCHAR"/>
+        <result column="cargodata" property="cargodata" jdbcType="VARCHAR"/>
+        <result column="beState" property="beState" jdbcType="VARCHAR"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    
+    
+    
+    <sql id="goodsSql">
+    	select stateId,
+    	goodsId,
+    	goodsName,
+    	barCode,
+    	haveOrnot,
+    	productdate,
+    	machCode,
+    	macAddr,
+    	cargodata,
+    	beState,
+    	createTime,
+    	updateTime from tb_business_geminigoodsstateassist
+    </sql>
+    
+    
+    <!-- 根据设备编号查数据 -->
+    <select id="findByMachCode" resultMap="goodsMap">
+    	<include refid="goodsSql"></include>
+    	<where>
+    		<if test="machCode !=null and machCode !=''">
+    			machCode=#{machCode}
+    		</if>
+    		and beState="OPEN"
+    	</where>
+    </select>
+    
+    
+    <insert id="addGeminiGoodsStateAssist" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.GeminiGoodsStateAssist">
+    	insert into tb_business_geminigoodsstateassist (goodsId,
+    	goodsName,
+    	barCode,
+    	haveOrnot,
+    	productdate,
+    	machCode,
+    	macAddr,
+    	cargodata,
+    	beState,
+    	createTime,
+    	updateTime) values (#{goodsId},
+    	#{goodsName},
+    	#{barCode},
+    	#{haveOrnot},
+    	#{productdate},
+    	#{machCode},
+    	#{macAddr},
+    	#{cargodata},
+    	#{beState},
+    	#{createTime},
+    	#{updateTime})
+    </insert>
+    
+    
+    
+    <update id="updateGeminiGoodsStateAssist" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.GeminiGoodsStateAssist">
+    	update tb_business_geminigoodsstateassist
+    	<set>
+    		<if test="goodsId !=null and goodsId !=''">
+    			goodsId=#{goodsId},
+    		</if>
+    		<if test="goodsName !=null and goodsName !=''">
+    			goodsName=#{goodsName},
+    		</if>
+    		<if test="barCode !=null and barCode !=''">
+    			barCode=#{barCode},
+    		</if>
+    		haveOrnot=#{haveOrnot},
+    		<if test="productdate !=null and productdate !=''">
+    			productdate=#{productdate},
+    		</if>
+    		<if test="machCode !=null and machCode !=''">
+    			machCode=#{machCode},
+    		</if>
+    		<if test="macAddr !=null and macAddr !=''">
+    			macAddr=#{macAddr},
+    		</if>
+    		<if test="cargodata !=null and cargodata !=''">
+    			cargodata=#{cargodata},
+    		</if>
+    		<if test="beState !=null and beState !=''">
+    			beState=#{beState},
+    		</if>
+    		<if test="updateTime !=null and updateTime !=''">
+    			updateTime=#{updateTime}
+    		</if>
+    	</set>
+    	<where>
+    		stateId=#{stateId}
+    	</where>
+    </update>
+    
+    <delete id="deleteGeminiGoodsStateAssist" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.GeminiGoodsStateAssist">
+    	delete from tb_business_geminigoodsstateassist
+    	<where>
+    		stateId=#{stateId}
+    	</where>
+    </delete>
+</mapper>

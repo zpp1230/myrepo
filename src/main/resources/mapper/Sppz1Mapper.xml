@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.Sppz1Mapper">
+
+  <resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.Sppz1" id="sppz1Map">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		
+		<result column="goods" property="goods" jdbcType="VARCHAR" />
+		
+		<result column="price" property="price" jdbcType="VARCHAR" />
+		
+		<result column="goodsId" property="goodsId" jdbcType="VARCHAR" />
+
+		<result column="goodsType" property="goodsType" jdbcType="VARCHAR" />
+						
+		<result column="machCode" property="machCode" jdbcType="VARCHAR" />
+		
+		<result column="type" property="type" jdbcType="VARCHAR" />
+		
+		<result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+			
+  </resultMap>
+
+
+  <delete id="deleteSppz1" parameterType="String">
+		delete from tb_business_sppz1 where machCode=#{machCode}
+  </delete>
+  
+  <delete id="deletesSppz1" parameterType="String">
+		delete from tb_business_sppz1 where machCode=#{machCode} and type=#{type}
+  </delete>
+  
+   <select id="getSppz1ByMachCode" resultMap="sppz1Map">
+      select * from tb_business_sppz1 where machCode=#{machCode}
+   </select>
+  
+  <insert id="save" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.Sppz1">
+      insert into tb_business_sppz1(goods,price,goodsId,goodsType,machCode,type,updateTime)values(#{goods},#{price},#{goodsId},#{goodsType},#{machCode},#{type},#{updateTime})
+  </insert>
+  
+</mapper>

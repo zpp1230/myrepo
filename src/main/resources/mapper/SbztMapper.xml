@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.SbztMapper">
+
+	<resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.Sbzt"
+		id="sbztMap">
+		<id column="sbztId" property="sbztId" jdbcType="INTEGER" />
+		
+		<result column="machCode" property="machCode" jdbcType="VARCHAR" />
+
+		<result column="macAddr" property="macAddr" jdbcType="VARCHAR" />
+
+		<result column="rotate" property="rotate" jdbcType="VARCHAR" />
+
+		<result column="getGoodsDoor1" property="getGoodsDoor1" jdbcType="VARCHAR" />
+
+		<result column="getGoodsDoor2" property="getGoodsDoor2" jdbcType="VARCHAR" />
+
+		<result column="getGoodsDoor3" property="getGoodsDoor3" jdbcType="VARCHAR" />
+
+		<result column="getGoodsDoor4" property="getGoodsDoor4" jdbcType="VARCHAR" />
+
+		<result column="getGoodsDoor5" property="getGoodsDoor5" jdbcType="VARCHAR" />
+
+		<result column="getGoodsDoor6" property="getGoodsDoor6" jdbcType="VARCHAR" />
+
+		<result column="getGoodsDoor7" property="getGoodsDoor7" jdbcType="VARCHAR" />
+		
+		<result column="getGoodsDoor8" property="getGoodsDoor8" jdbcType="VARCHAR" />
+		
+		<result column="getGoodsDoor9" property="getGoodsDoor9" jdbcType="VARCHAR" />
+		
+		<result column="getGoodsDoor10" property="getGoodsDoor10" jdbcType="VARCHAR" />
+		
+		<result column="trough" property="trough" jdbcType="VARCHAR" />
+		
+		<result column="temperatureSensor" property="temperatureSensor" jdbcType="VARCHAR" />
+		
+		<result column="save" property="save" jdbcType="VARCHAR" />
+		
+		<result column="doorStatus" property="doorStatus" jdbcType="VARCHAR" />
+		
+		<result column="houseTemperature" property="houseTemperature" jdbcType="VARCHAR" />	
+		
+		<result column="history" property="history" jdbcType="VARCHAR" />
+		
+		<result column="trouble" property="trouble" jdbcType="VARCHAR" />
+		
+		<result column="addTime" property="addTime" jdbcType="TIMESTAMP" />	
+				
+		<result column="nsj" property="nsj" jdbcType="VARCHAR" />		
+		<result column="xz" property="xz" jdbcType="VARCHAR" />		
+		<result column="wsj" property="wsj" jdbcType="VARCHAR" />
+		<result column="ntp" property="ntp" jdbcType="VARCHAR" />
+		<result column="nth" property="nth" jdbcType="VARCHAR" />
+		<result column="bwm" property="bwm" jdbcType="VARCHAR" />
+		<result column="wth" property="wth" jdbcType="VARCHAR" />
+		<result column="qwm" property="qwm" jdbcType="VARCHAR" />
+		<result column="whjc" property="whjc" jdbcType="VARCHAR" />
+		<result column="qwmhw" property="qwmhw" jdbcType="VARCHAR" />
+		<result column="cshzd" property="cshzd" jdbcType="VARCHAR" />
+		<result column="qwmcs" property="qwmcs" jdbcType="VARCHAR" />
+		<result column="gbcs" property="gbcs" jdbcType="VARCHAR" />
+		<result column="wbyc" property="wbyc" jdbcType="VARCHAR" />
+						
+	</resultMap>
+	
+	<select id="getSbztByMachCode" resultMap="sbztMap" parameterType="String">
+		select * from tb_monitor_sbzt where machCode=#{machCode} and history=#{history}
+	</select>
+	
+	<insert id="saveSbzt" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.Sbzt">
+	    insert into tb_monitor_sbzt(machCode,macAddr,rotate,getGoodsDoor1,getGoodsDoor2,getGoodsDoor3,getGoodsDoor4,getGoodsDoor5,getGoodsDoor6,getGoodsDoor7,getGoodsDoor8,getGoodsDoor9,getGoodsDoor10,trough,temperatureSensor,save,doorStatus,houseTemperature,history,trouble,addTime,nsj,xz,wsj,ntp,nth,bwm,wth,qwm,whjc,qwmhw,cshzd,qwmcs,gbcs,wbyc)values(#{machCode},#{macAddr},#{rotate},#{getGoodsDoor1},#{getGoodsDoor2},#{getGoodsDoor3},#{getGoodsDoor4},#{getGoodsDoor5},#{getGoodsDoor6},#{getGoodsDoor7},#{getGoodsDoor8},#{getGoodsDoor9},#{getGoodsDoor10},#{trough},#{temperatureSensor},#{save},#{doorStatus},#{houseTemperature},#{history},#{trouble},#{addTime},#{nsj},#{xz},#{wsj},#{ntp},#{nth},#{bwm},#{wth},#{qwm},#{whjc},#{qwmhw},#{cshzd},#{qwmcs},#{gbcs},#{wbyc})
+	</insert>
+	
+	<delete id="deleteSbztByMachCode" parameterType="Date">
+	   delete from tb_monitor_sbzt where addTime=#{addTime}
+	</delete>
+	
+	<update id="changeHistory" parameterType="String">
+	   update tb_monitor_sbzt set history ='0' where machCode=#{machCode}
+	</update>
+	
+	<select id="getSbztByMachCode1" resultMap="sbztMap" parameterType="String">
+		select * from tb_monitor_sbzt where machCode=#{machCode}
+	</select>
+	
+	<select id="getSbztByMachCode2" parameterType="String" resultMap="sbztMap">
+	    select * from tb_monitor_sbzt where machCode=#{machCode} and history ='1'
+	</select>
+	
+	<select id="getSbztByMachCodeAndTime" resultMap="sbztMap">
+	    select * from tb_monitor_sbzt where machCode=#{0} and  addTime &lt;#{2} and addTime &gt;#{1}
+	</select>
+	
+	<select id="findSbzt" resultMap="sbztMap" parameterType="String">
+	    select * from tb_monitor_sbzt where machCode=#{machCode} and history ='1'
+	</select>
+	
+</mapper>

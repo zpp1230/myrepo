@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.HdpzMapper">
+
+	<resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.Hdpz"
+		id="hdpzMap">
+		<id column="operatorID" property="operatorID" jdbcType="VARCHAR" />
+
+		<result column="machCode" property="machCode" jdbcType="VARCHAR" />
+
+		<result column="model" property="model" jdbcType="VARCHAR" />
+		
+	</resultMap>
+
+	<select id="getHdpzByOperatorID" resultMap="hdpzMap"
+		parameterType="String">
+		select * from tb_business_hdpz where operatorID=#{operatorID}
+	</select>
+</mapper>

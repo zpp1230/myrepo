@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.YyzdMapper">
+
+	<resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.Yyzd"
+		id="yyzdMap">
+		<id column="operatorID" property="operatorID" jdbcType="VARCHAR" />
+
+		<result column="operator" property="operator" jdbcType="VARCHAR" />
+
+		<result column="company" property="company" jdbcType="VARCHAR" />
+
+		<result column="location" property="location" jdbcType="VARCHAR" />
+
+		<result column="phone1" property="phone1" jdbcType="VARCHAR" />
+
+		<result column="phone2" property="phone2" jdbcType="VARCHAR" />
+
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+
+		<result column="createMan" property="createMan" jdbcType="VARCHAR" />
+
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+
+		<result column="changeMan" property="changeMan" jdbcType="VARCHAR" />
+
+		<result column="changeTime" property="changeTime" jdbcType="TIMESTAMP" />
+		
+		<result column="mark" property="mark" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="getYyzdByOperatorID" resultMap="yyzdMap"
+		parameterType="String">
+		select * from tb_basic_yyzd where operatorID=#{operatorID}
+	</select>
+
+	<insert id="addYyzd" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.Yyzd">
+		insert into
+		tb_basic_yyzd(operatorID,operator,company,location,phone1,phone2,remark,createMan,createTime,changeMan,changeTime,mark)
+		values
+		(#{operatorID},#{operator},#{company},#{location},#{phone1},#{phone2},#{remark},#{createMan},#{createTime},#{changeMan},#{changeTime},#{mark})
+	</insert>
+
+	<update id="updateYyzd" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.Yyzd">
+		update tb_basic_yyzd set
+		operatorID=#{operatorID},operator=#{operator},company=#{company},location=#{location},phone1=#{phone1},phone2=#{phone2},remark=#{remark},createMan=#{createMan},createTime=#{createTime},changeMan=#{changeMan},changeTime=#{changeTime}
+		where operatorID=#{operatorID}
+	</update>
+
+	<select id="find" resultMap="yyzdMap">
+		select * from tb_basic_yyzd
+		<where>
+			<if test="operator !=null and operator !=''">
+				operator like CONCAT('%',#{operator},'%')
+			</if>	
+			and mark='1' or mark is NULL				
+		</where>
+		order by changeTime desc
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+
+	<select id="getTotal" parameterType="String" resultType="Long">
+		select count(*) from tb_basic_yyzd
+		<where>
+			<if test="operator !=null and operator !=''">
+				operator like CONCAT('%',#{operator},'%')
+			</if>
+			and mark='1' or mark is NULL
+		</where>
+	</select>
+
+	<!-- <delete id="deleteYyzd" parameterType="String">
+		delete from tb_basic_yyzd where operatorID=#{operatorID}
+	</delete> -->
+	
+	<update id="deleteYyzd" parameterType="String">
+		update tb_basic_yyzd set mark='2' where operatorID=#{operatorID}
+	</update>
+
+</mapper>

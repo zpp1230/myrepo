@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.RoleMapper" >
+  <resultMap id="BaseResultMap" type="com.cn.jf.backstage.dao.bg_dao.entity.RoleMaster" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="roleName" property="roleName" jdbcType="VARCHAR" />
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="updateBy" property="updateBy" jdbcType="VARCHAR" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id,
+	roleName,
+	createBy,
+	createTime,
+	updateBy,
+	updateTime,
+	remark
+  </sql>
+  <sql id="condition" >
+  	<if test="null!=params.roleName and ''!=params.roleName">
+  		and roleName like concat('%',#{params.roleName},'%')
+  	</if>
+  </sql>
+  <select id="selectParams" resultMap="BaseResultMap" parameterType="map" >
+    SELECT 
+    <include refid="Base_Column_List"/>
+    FROM tb_auth_role WHERE 1=1
+    <include refid="condition"/>
+  </select>
+  <select id="findCount" resultType="java.lang.Integer" >
+    SELECT COUNT(1) as s FROM tb_auth_role WHERE 1=1 
+    <include refid="condition" />
+  </select>
+   <delete id="deleteByPrimarayKeyForModel" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.RoleMaster" >
+    DELETE FROM tb_auth_role
+    WHERE id = #{id,jdbcType=INTEGER}
+  </delete>
+  <update id="updateByPrimaryKey" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.RoleMaster" >
+    UPDATE tb_auth_role
+    SET   
+          id=#{id,jdbcType=INTEGER},
+          roleName=#{roleName,jdbcType=VARCHAR},
+          createBy=#{createBy,jdbcType=VARCHAR},
+          createTime=#{createTime,jdbcType=TIMESTAMP},
+          updateBy=#{updateBy,jdbcType=VARCHAR},
+          updateTime=#{updateTime,jdbcType=TIMESTAMP},
+          remark=#{remark,jdbcType=VARCHAR}  
+    WHERE id = #{id,jdbcType=INTEGER}
+  </update>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.RoleMaster">
+    INSERT INTO tb_auth_role(
+		roleName,
+		createBy,
+		createTime,
+		updateBy,
+		updateTime,
+		remark
+    )
+    VALUES(
+      #{roleName,jdbcType=VARCHAR},
+      #{createBy,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP},
+      #{updateBy,jdbcType=VARCHAR},
+      #{updateTime,jdbcType=TIMESTAMP},
+      #{remark,jdbcType=VARCHAR}
+    )
+  </insert>
+</mapper>

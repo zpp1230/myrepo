@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.WaresOrderWareidMapper">
+	<resultMap id="BaseResultMap" type="com.cn.jf.backstage.dao.bg_dao.model.WaresOrderWareid" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="out_trade_no" property="out_trade_no" jdbcType="VARCHAR" />
+    <result column="waresId" property="waresId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <select id="findByTradeNo" resultMap="BaseResultMap">
+  	select id,out_trade_no,waresId from tb_pm_wares_orderwareid
+  	<where>
+  		<if test="out_trade_no !=null and out_trade_no !=''">
+  			out_trade_no=#{out_trade_no}
+  		</if>
+  	</where>
+  </select>
+  
+  
+  
+  <select id="findByWaresId" resultMap="BaseResultMap">
+  	select id,out_trade_no,waresId from tb_pm_wares_orderwareid
+  	 <where>
+  		<if test="waresId !=null and waresId !=''">
+  			waresId=#{waresId}
+  		</if>
+  	</where>
+  </select>
+  
+</mapper>

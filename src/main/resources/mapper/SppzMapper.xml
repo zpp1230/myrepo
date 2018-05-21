@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.SppzMapper">
+
+<resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.Sppz" id="sppzMap">
+		<id column="machCode" property="machCode" jdbcType="VARCHAR" />
+
+		<result column="tier" property="tier" jdbcType="VARCHAR" />
+
+		<result column="columns" property="columns" jdbcType="VARCHAR" />
+
+		<result column="goodsNum" property="goodsNum" jdbcType="VARCHAR" />
+
+		<result column="goodsSize" property="goodsSize" jdbcType="VARCHAR" />
+
+		<result column="goods" property="goods" jdbcType="VARCHAR" />
+		
+		<result column="machModel" property="machModel" jdbcType="VARCHAR" />
+		
+		<result column="mach" property="mach" jdbcType="VARCHAR" />		
+
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+
+		<result column="createMan" property="createMan" jdbcType="VARCHAR" />
+
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+
+		<result column="changeMan" property="changeMan" jdbcType="VARCHAR" />
+
+		<result column="changeTime" property="changeTime" jdbcType="TIMESTAMP" />
+</resultMap>
+
+    <select id="getSppzByMach" resultMap="sppzMap" parameterType="String">
+		select * from tb_business_sppz where mach=#{mach}
+	</select>
+
+	<!-- 新增数据 -->
+	<insert id="addSppz" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.Sppz">
+		insert into tb_business_sppz(machCode,
+		tier,
+		columns,
+		goodsNum,
+		goodsSize,
+		goods,
+		machModel,
+		mach,		
+		createMan,
+		changeMan,
+		remark,
+		createTime,
+		changeTime) values (#{machCode},
+		#{tier},
+		#{columns},
+		#{goodsNum},
+		#{goodsSize},
+		#{goods},
+		#{machModel},
+		#{mach},
+		#{createMan},
+		#{changeMan},
+		#{remark},
+		#{createTime},
+		#{changeTime})
+	</insert>
+
+	<!-- 更新数据 -->
+	<update id="updateSppz" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.Sppz">
+		update tb_business_sppz set machCode=#{machCode},tier=#{tier},columns=#{columns},goodsNum=#{goodsNum},goodsSize=#{goodsSize},goods=#{goods},machModel=#{machModel},mach=#{mach},remark=#{remark},createMan=#{createMan},createTime=#{createTime},changeMan=#{changeMan},changeTime=#{changeTime} where mach=#{mach}
+	</update>
+	
+	<!--分页查询  -->
+	<select id="find" resultMap="sppzMap">
+		select * from tb_business_sppz
+		<where>				
+			<if test="machCode !=null and machCode !='' ">
+				machCode like CONCAT('%',#{machCode},'%')
+			</if>		
+			<if test="tier !=null and tier !='' ">
+				and tier = #{tier}
+			</if>
+			<if test="columns !=null and columns !='' ">
+				and columns = #{columns}
+			</if>
+		</where>
+		order by changeTime desc
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	<!-- 获取总记录数 -->
+	<select id="getTotal" parameterType="String" resultType="Long">
+		select count(*) from tb_business_sppz		
+		<where>		
+			<if test="machCode !=null and machCode !='' ">
+				machCode like CONCAT('%',#{machCode},'%')
+			</if>			
+			<if test="tier !=null and tier !='' ">
+				and tier = #{tier}
+			</if>
+			<if test="columns !=null and columns !='' ">
+				and columns = #{columns}
+			</if>
+		</where>	
+	</select>
+	
+	<!-- 根据machCode单个删除 或者多个删除 -->
+	<delete id="deleteSppz" parameterType="String">
+		delete from tb_business_sppz where mach=#{mach}
+	</delete>
+
+</mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.AuthorRoleModelMapper">
+	<resultMap type="com.cn.jf.backstage.dao.bg_dao.model.Author" id="AuthorMap">
+		<id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="roleId" property="roleId" jdbcType="INTEGER"/>
+        <result column="menuid" property="menuid" jdbcType="VARCHAR"/>
+        <result column="add_" property="add_" jdbcType="INTEGER"/>
+        <result column="search" property="search" jdbcType="INTEGER"/>
+        <result column="update_" property="update_" jdbcType="INTEGER"/>
+        <result column="delete_" property="delete_" jdbcType="INTEGER"/>
+        <result column="import_" property="import_" jdbcType="INTEGER"/>
+        <result column="export_" property="export_" jdbcType="INTEGER"/>
+        <result column="print" property="print" jdbcType="INTEGER"/>
+        <result column="menu" property="menu" jdbcType="INTEGER"/>
+	</resultMap>
+	
+	<select id="findByRoleId" resultMap="AuthorMap">
+		select id,
+		roleId,
+		menuid,
+		add_,
+		search,
+		update_,
+		delete_,
+		import_,
+		export_,
+		print,
+		menu from tb_auth_author
+		<where>
+			roleId=#{roleId} and menuid=#{menuid}
+		</where>
+	</select>
+</mapper>

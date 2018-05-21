@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.DevicemMapper">
+	<resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.DeviceMaster" id="DeviceMap">
+		<id column="machCode" property="machCode" jdbcType="VARCHAR"/>
+		<result column="machName" property="machName" jdbcType="VARCHAR"/>
+        <result column="machModel" property="machModel" jdbcType="VARCHAR"/>
+        <result column="machModelID" property="machModelID" jdbcType="VARCHAR"/>
+        <result column="operateCompany" property="operateCompany" jdbcType="VARCHAR"/>
+        <result column="operatorID" property="operatorID" jdbcType="VARCHAR"/>
+        <result column="useAddr" property="useAddr" jdbcType="VARCHAR"/>
+        <result column="PermaintBy" property="PermaintBy" jdbcType="VARCHAR"/>
+        <result column="replenishBy" property="replenishBy" jdbcType="VARCHAR"/>
+        <result column="tel" property="tel" jdbcType="VARCHAR"/>
+        <result column="macAddr" property="macAddr" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	
+	<resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.DeviceMaster" id="DeviceMasterMap">
+		<id column="machCode" property="machCode" jdbcType="VARCHAR"/>
+		<result column="machName" property="machName" jdbcType="VARCHAR"/>
+        <result column="operateCompany" property="operateCompany" jdbcType="VARCHAR"/>
+        <result column="machModelID" property="machModelID" jdbcType="VARCHAR"/>
+        <result column="useAddr" property="useAddr" jdbcType="VARCHAR"/>
+        <result column="PermaintBy" property="PermaintBy" jdbcType="VARCHAR"/>
+        <result column="replenishBy" property="replenishBy" jdbcType="VARCHAR"/>
+        <result column="tel" property="tel" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap type="com.cn.jf.backstage.dao.bg_dao.model.WaresOrderWareid_" id="WaresOrderWareid_">
+		<result column="waresId" property="waresId" jdbcType="VARCHAR"/>
+        <result column="waresName" property="waresName" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	
+	<!-- 根据运营方id查找设备 -->
+	<select id="findmachCodePage" resultMap="DeviceMap">
+		select machCode,machName,machModel,useAddr,PermaintBy,replenishBy,tel,operateCompany,operatorID,macAddr,machModelID from tb_basic_devmaster
+		<where>
+			<if test="operatorID !=null and operatorID !=''">
+				operatorID=#{operatorID}
+			</if>
+		</where>
+		order by updateTime desc
+	</select>
+	
+	<select id="findOrderInfo" resultMap="WaresOrderWareid_">
+		select b.waresId,b.waresName from tb_basic_gdmaster b where b.waresId=(select waresId from tb_pm_wares_orderwareid c where c.out_trade_no=#{params.out_trade_no}) 
+	</select>
+	
+	
+	<select id="findByOperCount" resultType="Long">
+		select count(*) from tb_basic_devmaster
+		<where>
+			<if test="operatorID !=null and operatorID !=''">
+				operatorID=#{operatorID}
+			</if>
+		</where>
+	</select>
+	
+	
+	
+	<select id="findmachCodePageAA" resultMap="DeviceMap">
+		SELECT t.* FROM tb_basic_devmaster t WHERE t.operatorID in
+  		(SELECT b.operPartyID from tb_basic_stafmaster b where b.emplCode=#{emplCode}) or 1=(SELECT IF(v.position='aa',1,0) from tb_basic_stafmaster v WHERE v.emplCode=#{emplCode})
+		order by updateTime desc
+	</select>
+	
+	
+	<select id="findByOperCountAA" resultType="Long">
+		SELECT count(*) FROM tb_basic_devmaster t WHERE t.operatorID in
+  		(SELECT b.operPartyID from tb_basic_stafmaster b where b.emplCode=#{emplCode}) or 1=(SELECT IF(v.position='aa',1,0) from tb_basic_stafmaster v WHERE v.emplCode=#{emplCode})
+	</select>
+	
+	
+	
+	<select id="findByPage" resultMap="DeviceMasterMap">
+		select machCode,machName,operateCompany,useAddr,PermaintBy,replenishBy,tel,machModelID from tb_basic_devmaster
+		<where>
+			<if test="machCode !=null and machCode !=''">
+				machCode like CONCAT('%',#{machCode},'%')
+			</if>
+			<if test="machName !=null and machName !=''">
+				and machName like CONCAT('%',#{machName},'%')
+			</if>
+		</where>
+		order by updateTime desc
+	</select>
+	
+	
+	<select id="findByCount" resultType="Long">
+		select count(*) from tb_basic_devmaster
+		<where>
+			<if test="machCode !=null and machCode !=''">
+				machCode like CONCAT('%',#{machCode},'%')
+			</if>
+			<if test="machName !=null and machName !=''">
+				and machName like CONCAT('%',#{machName},'%')
+			</if>
+		</where>
+	</select>
+	
+	
+	<!-- 根据mac地址查找设备 -->
+	<select id="findByMacAddr" resultMap="DeviceMap">
+		select machCode,machName,machModel,useAddr,PermaintBy,replenishBy,tel,macAddr,operateCompany,operatorID,machModelID from tb_basic_devmaster
+		<where>
+			<if test="macAddr !=null and macAddr !=''">
+				macAddr=#{macAddr}
+			</if>
+		</where>
+	</select>
+	
+	
+	<select id="findByMachCode" resultMap="DeviceMap">
+		select machCode,machName,machModel,useAddr,PermaintBy,replenishBy,tel,macAddr,operateCompany,operatorID,machModelID from tb_basic_devmaster
+		<where>
+			<if test="machCode !=null and machCode !=''">
+				machCode=#{machCode}
+			</if>
+		</where>
+	</select>
+</mapper>

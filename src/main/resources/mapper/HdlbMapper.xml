@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.TbBasicHdlbMapper">
+    <resultMap id="hdlbMap" type="com.cn.jf.backstage.dao.bg_dao.entity.TbBasicHdlb">
+        <id column="category_Id" property="categoryId" jdbcType="VARCHAR"/>
+        <result column="goods_category" property="goodsCategory" jdbcType="VARCHAR"/>
+        <result column="goods_form" property="goodsForm" jdbcType="VARCHAR"/>
+        <result column="goods_length" property="goodsLength" jdbcType="VARCHAR"/>
+        <result column="goods_width" property="goodsWidth" jdbcType="VARCHAR"/>
+        <result column="goods_height" property="goodsHeight" jdbcType="VARCHAR"/>
+        <result column="goods_pic" property="goodsPic" jdbcType="VARCHAR"/>
+        <result column="max_com_norms" property="maxComNorms" jdbcType="VARCHAR"/>
+        <result column="min_com_norms" property="minComNorms" jdbcType="VARCHAR"/>
+        <result column="shipment_way" property="shipmentWay" jdbcType="VARCHAR"/>
+        <result column="create_per" property="createPer" jdbcType="VARCHAR"/>
+        <result column="update_per" property="updatePer" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    
+    <!-- <sql id="hdlb_basic_list">
+		  select goods_category_Id,goods_category, goods_form,goods_length,goods_width,goods_height,
+		   goods_pic,max_com_norms,min_com_norms,shipment_way
+    </sql> -->
+    
+    
+    <sql id="hdlb_basic_list">
+		  select category_Id,
+		  goods_category,
+		  goods_form,
+		  goods_length,
+		  goods_width,
+		  goods_height,
+		  goods_pic,
+		  max_com_norms,
+		  min_com_norms,
+		  shipment_way,
+		  create_per,
+		  update_per,
+		  create_time,
+		  modify_time from tb_basic_hdlb 
+    </sql>
+    
+    <!-- 查询所有数据 -->
+    <select id="findBySize" resultType="Long">
+     select count(*) from tb_basic_hdlb
+    </select>
+    
+    
+    <select id="findBycount" resultType="Long">
+     select count(*) from tb_basic_hdlb
+     <where>
+        	<if test="categoryId !=null and categoryId !=''">
+        		category_Id like CONCAT('%',#{categoryId},'%')
+        	</if>
+        	<if test="goodsForm !=null and goodsForm !=''">
+        		and goods_form=#{goodsForm}
+        	</if>
+        </where>
+    </select>
+    
+    
+    <!-- 分页查询 -->
+    <select id="findHdlbListByPage" resultMap="hdlbMap">
+        <include refid="hdlb_basic_list" />
+        <where>
+        	<if test="categoryId !=null and categoryId !=''">
+        		category_Id like CONCAT('%',#{categoryId},'%')
+        	</if>
+        	<if test="goodsForm !=null and goodsForm !=''">
+        		and goods_form=#{goodsForm}
+        	</if>
+        </where>
+        order by modify_time desc
+    </select>
+    
+    
+    
+    <select id="findByPage" resultMap="hdlbMap">
+        <include refid="hdlb_basic_list" /> order by modify_time desc
+    </select>
+    
+    
+    <!-- <select id="findHdlbListByPage" parameterType="Map" resultMap="hdlbMap">
+        select * from tb_basic_hdlb
+        <where>
+            <if test="goodsCategoryID!=null and goodsCategoryID!='' ">
+                and goods_category_Id like #{goodsCategoryID}
+            </if>
+        </where>
+        <if test="start!=null and size!=null">
+            limit #{start},#{size}
+        </if>
+    </select>
+    
+    <select id="getTotal" parameterType="Map" resultType="Long">
+        select count(*) from tb_basic_hdlb
+    </select> -->
+    
+    
+    
+    
+    
+    <!-- 根据ID查询一条数据 _parameter相当于category_Id，但在mapper接口中参数前加@Param-->
+    <select id="findById" resultMap="hdlbMap" parameterType="java.lang.String">
+        <include refid="hdlb_basic_list" /> 
+         <where> 
+         <if test="categoryId !=null and categoryId !=''">
+             category_Id=#{categoryId}
+         </if>
+         </where>
+    </select>
+    
+    <!-- 删除数据 -->
+    <delete id="deleteById" parameterType="java.lang.String" >
+	    delete from tb_basic_hdlb
+	    where category_Id = #{categoryId}
+	</delete>
+    
+    <!-- 新增数据 -->
+    <insert id="insertHdlb" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.TbBasicHdlb" >
+	    insert into tb_basic_hdlb (category_Id,goods_category,goods_form,goods_length,goods_width,goods_height,goods_pic,max_com_norms,min_com_norms,shipment_way,create_per,create_time,modify_time,update_per)
+values (#{categoryId},#{goodsCategory},#{goodsForm},#{goodsLength},#{goodsWidth},#{goodsHeight},#{goodsPic},#{maxComNorms},#{minComNorms},#{shipmentWay},#{createPer},#{createTime},#{modifyTime},#{updatePer})
+    </insert>
+    
+    <!-- 更新数据 -->
+    <update id="updateHdlbById" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.TbBasicHdlb" >
+    update tb_basic_hdlb
+    <set >
+      <if test="goodsCategory != null and goodsCategory !=''" >
+        goods_category = #{goodsCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsForm != null" >
+        goods_form = #{goodsForm},
+      </if>
+      <if test="goodsLength != null" >
+        goods_length = #{goodsLength},
+      </if>
+      <if test="goodsWidth != null" >
+        goods_width = #{goodsWidth},
+      </if>
+      <if test="goodsHeight != null" >
+        goods_height = #{goodsHeight},
+      </if>
+      <if test="goodsPic != null" >
+        goods_pic = #{goodsPic},
+      </if>
+      <if test="maxComNorms != null and maxComNorms !=''" >
+        max_com_norms = #{maxComNorms},
+      </if>
+      <if test="minComNorms != null and minComNorms !=''" >
+        min_com_norms = #{minComNorms},
+      </if>
+      <if test="shipmentWay != null" >
+        shipment_way = #{shipmentWay},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime},
+      </if>
+      <if test="updatePer != null" >
+        update_per = #{updatePer}
+      </if>
+    </set>
+    <where>
+    	<if test="categoryId !=null and categoryId !=''">
+    		category_Id = #{categoryId}
+    	</if>
+    </where>
+  </update>
+  
+  
+  
+  
+  <!-- 更新数据 -->
+    <update id="updateHdlb" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.TbBasicHdlb" >
+    update tb_basic_hdlb
+    <set >
+      <if test="goodsCategory != null and goodsCategory !=''" >
+        goods_category = #{goodsCategory},
+      </if>
+      <if test="goodsForm != null" >
+        goods_form = #{goodsForm},
+      </if>
+      <if test="goodsLength != null" >
+        goods_length = #{goodsLength},
+      </if>
+      <if test="goodsWidth != null" >
+        goods_width = #{goodsWidth},
+      </if>
+      <if test="goodsHeight != null" >
+        goods_height = #{goodsHeight},
+      </if>
+      <if test="goodsPic != null" >
+        goods_pic = #{goodsPic},
+      </if>
+      <if test="maxComNorms != null and maxComNorms !=''" >
+        max_com_norms = #{maxComNorms},
+      </if>
+      <if test="minComNorms != null and minComNorms !=''" >
+        min_com_norms = #{minComNorms},
+      </if>
+      <if test="shipmentWay != null" >
+        shipment_way = #{shipmentWay},
+      </if> 
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime},
+      </if>
+      <if test="updatePer != null" >
+        update_per = #{updatePer}
+      </if>
+    </set>
+    <where>
+    	<if test="categoryId !=null and categoryId !=''">
+    		category_Id = #{categoryId}
+    	</if>
+    </where>
+  </update>
+</mapper>

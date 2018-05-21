@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.PayOrderStatisticMapper" >
+  <resultMap id="BaseResultMap" type="com.cn.jf.backstage.dao.bg_dao.model.PayOrder" >
+    <id column="out_trade_no" property="out_trade_no" jdbcType="VARCHAR" />
+    <result column="transaction_id" property="transaction_id" jdbcType="VARCHAR" />
+    <result column="fee_type" property="fee_type" jdbcType="VARCHAR" />
+    <result column="cash_fee" property="cash_fee" jdbcType="DOUBLE" />
+    <result column="total_fee" property="total_fee" jdbcType="DOUBLE" />
+    <result column="trade_type" property="trade_type" jdbcType="VARCHAR" />
+    <result column="openid" property="openid" jdbcType="VARCHAR" />
+    <result column="macaddress" property="macaddress" jdbcType="VARCHAR" />
+    <result column="buyer_id" property="buyer_id" jdbcType="VARCHAR" />
+    <result column="buyer_logon_id" property="buyer_logon_id" jdbcType="VARCHAR" />
+    <result column="total_amount" property="total_amount" jdbcType="DOUBLE" />
+    <result column="receipt_amount" property="receipt_amount" jdbcType="DOUBLE" />
+    <result column="trade_no" property="trade_no" jdbcType="VARCHAR" />
+    <result column="mark" property="mark" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="waresId" property="waresId" jdbcType="VARCHAR" />
+    <result column="paymentDate" property="paymentDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  
+  <sql id="paySql">
+  	select out_trade_no,
+  	total_fee,
+  	openid,
+  	macaddress,
+  	buyer_id,
+  	receipt_amount,
+  	total_amount,
+  	mark,waresId,
+  	paymentDate from tb_pm_payorder
+  </sql>
+  <select id="findPay" resultMap="BaseResultMap">
+  	<include refid="paySql"></include>
+  	<where>
+  		<if test="macaddress !=null and macaddress !=''">
+  			macaddress like CONCAT('%',#{macaddress},'%')
+  		</if>
+  		<if test="openid !=null and openid !=''">
+  			and openid=#{openid}
+  		</if>
+  		<if test="buyer_id !=null and buyer_id !=''">
+  			 or buyer_id=#{buyer_id}
+  		</if>
+  	</where>
+  	order by paymentDate desc
+  </select>
+  
+  <!-- 登录账号找运营方 -->
+  <resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.StaffMaster" id="stafMap">
+  	<id column="emplCode" property="emplCode" jdbcType="VARCHAR" />
+    <result column="emplName" property="emplName" jdbcType="VARCHAR" />
+    <result column="operPartyID" property="operPartyID" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <!-- 运营方找设备 -->
+  <resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.DeviceMaster" id="devMap">
+  	<id column="machCode" property="machCode" jdbcType="VARCHAR" />
+    <result column="machName" property="machName" jdbcType="VARCHAR" />
+    <result column="macAddr" property="macAddr" jdbcType="VARCHAR" />
+    <result column="operatorID" property="operatorID" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  
+  <!-- 查找商品配置 -->
+  <resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.Sppz2" id="spMap">
+  	<id column="id" property="id" jdbcType="INTEGER" />
+    <result column="goodsId" property="goodsId" jdbcType="VARCHAR" />
+    <result column="goods" property="goods" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="VARCHAR" />
+    <result column="number" property="number" jdbcType="VARCHAR" />
+    <result column="machCode" property="machCode" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <!-- 查找商品配置 -->
+  <resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.GoodsMaster" id="gdMap">
+  	<id column="waresId" property="waresId" jdbcType="VARCHAR" />
+    <result column="waresName" property="waresName" jdbcType="VARCHAR" />
+    <result column="waresPrice" property="waresPrice" jdbcType="DOUBLE" />
+    <result column="operatorID" property="operatorID" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  
+  
+  
+  
+  <select id="findGoodsWithOper" resultMap="gdMap">
+  	select waresId,waresName,waresPrice,operatorID from tb_basic_gdmaster
+  	<where>
+  		<if test="operatorID !=null and operatorID !=''">
+  			operatorID=#{operatorID}
+  		</if>
+  	</where>
+  </select>
+  
+  
+  
+  <select id="findGoodsWithMachCode" resultMap="spMap">
+  	select id,goodsId,goods,price,number,machCode from tb_business_sppz2
+  	<where>
+  		<if test="machCode !=null and machCode !=''">
+  			machCode=#{machCode}
+  		</if>
+  	</where>
+  </select>
+  
+  
+  
+  <select id="findOperWithEmpCode" resultMap="stafMap">
+  	select emplCode,emplName,operPartyID,position from tb_basic_stafmaster
+  	<where>
+  		<if test="emplCode !=null and emplCode !=''">
+  			emplCode=#{emplCode}
+  		</if>
+  	</where>
+  </select>
+  
+  
+  <select id="findMachWithOper" resultMap="devMap">
+  	select machCode,machName,macAddr,operatorID from tb_basic_devmaster
+  	<where>
+  		<if test="operatorID !=null and operatorID !=''">
+  			operatorID=#{operatorID}
+  		</if>
+  	</where>
+  </select>
+  
+  
+  <select id="findMachWithOperAA" resultMap="devMap">
+  	SELECT t.* FROM tb_basic_devmaster t WHERE t.operatorID in
+  	(SELECT b.operPartyID from tb_basic_stafmaster b where b.emplCode=#{emplCode}) or 1=(SELECT IF(v.position='aa',1,0) from tb_basic_stafmaster v WHERE v.emplCode=#{emplCode})
+  </select>
+  
+</mapper>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.MenuMapper" >
+  <resultMap id="BaseResultMap" type="com.cn.jf.backstage.dao.bg_dao.entity.MenuMaster" >
+    <id column="menuid" property="menuid" jdbcType="VARCHAR" />
+    <result column="menuname" property="menuname" jdbcType="VARCHAR" />
+    <result column="menuPerent" property="menuPerent" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="updateBy" property="updateBy" jdbcType="VARCHAR" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    menuid,
+	menuname,
+	menuPerent,
+	icon,
+	url,
+	createBy,
+	createTime,
+	updateBy,
+	updateTime,
+	remark
+  </sql>
+  <sql id="condition" >
+  	<if test="null!=params.emplCode and ''!=params.emplCode">
+  		and emplCode=#{params.emplCode}
+  	</if>
+  </sql>
+  <select id="selectParams" resultMap="BaseResultMap" parameterType="map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM tb_basic_menu  where  menuid in(select menuid from tb_auth_author t where t.roleId IN 
+	(SELECT b.roleId from tb_auth_allot b WHERE b.emplCode=#{params.emplCode}) 
+		and t.menu=1 GROUP BY t.menuid 
+		  UNION SELECT p.menuPerent  from tb_basic_menu p WHERE p.menuid in(
+		 select menuid from tb_auth_author t where t.roleId IN (
+		   SELECT b.roleId from tb_auth_allot b WHERE b.emplCode=#{params.emplCode}
+		 )and t.menu=1
+		)  GROUP BY p.menuPerent
+	)
+  </select>
+  <select id="selectAllParams" resultMap="BaseResultMap">
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM tb_basic_menu
+  </select>
+</mapper>

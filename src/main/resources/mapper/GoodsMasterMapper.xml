@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.GoodsMasterMapper" >
+  <resultMap id="BaseResultMap" type="com.cn.jf.backstage.dao.bg_dao.entity.GoodsMaster" >
+    <id column="waresId" property="waresId" jdbcType="VARCHAR" />
+    <result column="waresName" property="waresName" jdbcType="VARCHAR" />
+    <result column="waresPrice" property="waresPrice" jdbcType="DOUBLE" />
+    <result column="waresImage1" property="waresImage1" jdbcType="VARCHAR" />
+    <result column="waresImage2" property="waresImage2" jdbcType="VARCHAR" />
+    <result column="starValue" property="starValue" jdbcType="INTEGER" />
+    <result column="callBackUrl" property="callBackUrl" jdbcType="VARCHAR" />
+    <result column="waresDiscr" property="waresDiscr" jdbcType="VARCHAR" />
+    <result column="quaGuaPeriod" property="quaGuaPeriod" jdbcType="INTEGER" />
+    <result column="operParty" property="operParty" jdbcType="VARCHAR"/>
+    <result column="operatorID" property="operatorID" jdbcType="VARCHAR"/>
+    
+    <result column="waresSyno" property="waresSyno" jdbcType="VARCHAR" />
+    <result column="waresCost" property="waresCost" jdbcType="DOUBLE" />
+    <result column="actualSelPrice" property="actualSelPrice" jdbcType="DOUBLE" />
+    <result column="unitPrice" property="unitPrice" jdbcType="VARCHAR" />
+    <result column="waresLunchboxModel" property="waresLunchboxModel" jdbcType="VARCHAR" />
+    <result column="theGoodsModel" property="theGoodsModel" jdbcType="VARCHAR" />
+    <result column="barCodeNo" property="barCodeNo" jdbcType="VARCHAR" />
+    <result column="heatingTime" property="heatingTime" jdbcType="INTEGER" />
+    <result column="supplier" property="supplier" jdbcType="VARCHAR" />
+    <result column="waresType" property="waresType" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="updateBy" property="updateBy" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.Pay" id="payMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="pass" property="pass" jdbcType="VARCHAR" />
+		<result column="user" property="user" jdbcType="VARCHAR" />		
+		<result column="mch_id" property="mch_id" jdbcType="VARCHAR" />	
+		<result column="papers" property="papers" jdbcType="BLOB" />	
+		<result column="appid" property="appid" jdbcType="VARCHAR" />	
+		<result column="sdkpass" property="sdkpass" jdbcType="VARCHAR" />			
+		<result column="sdkuser" property="sdkuser" jdbcType="VARCHAR" />	
+		<result column="silver_merchant" property="silver_merchant" jdbcType="VARCHAR" />	
+		<result column="silver_end" property="silver_end" jdbcType="VARCHAR" />	
+		<result column="silver_mechanism" property="silver_mechanism" jdbcType="VARCHAR" />		
+		<result column="silver_news" property="silver_news" jdbcType="VARCHAR" />	
+		<result column="silver_number" property="silver_number" jdbcType="VARCHAR" />	
+		<result column="silver_md5" property="silver_md5" jdbcType="VARCHAR" />	
+		<result column="operatorID" property="operatorID" jdbcType="VARCHAR" />			
+		<result column="pay_method" property="pay_method" jdbcType="VARCHAR" />
+		<result column="fileName" property="fileName" jdbcType="VARCHAR" />		
+		<result column="fileRealName" property="fileRealName" jdbcType="VARCHAR" />	
+</resultMap>
+  
+  
+  <sql id="Base_Column_List" >
+    waresId,
+	waresName,
+	waresPrice,
+	waresImage1,
+	waresImage2,
+	starValue,
+	callBackUrl,
+	waresDiscr,
+	quaGuaPeriod,
+	operParty,
+	operatorID,
+	waresSyno,
+	waresCost,
+	actualSelPrice,
+	unitPrice,
+	waresLunchboxModel,
+	theGoodsModel,
+	barCodeNo,
+	heatingTime,
+	supplier,
+	waresType,
+	createTime,
+	createBy,
+	updateTime,
+	updateBy,
+	remark
+  </sql>
+  <sql id="condition" >
+  	<if test="null!=params.waresName and ''!=params.waresName">
+  		and waresName like concat('%',#{params.waresName},'%')
+  	</if>
+  	<if test="null!=params.theGoodsModel and ''!=params.theGoodsModel">
+  		and theGoodsModel like concat('%',#{params.theGoodsModel},'%')
+  	</if>
+  	<if test="null!=params.waresType and ''!=params.waresType">
+  		and waresType like concat('%',#{params.waresType},'%')
+  	</if>
+  </sql>
+  <select id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  	DELETE FROM tb_basic_gdmaster
+    WHERE waresId = #{waresId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimarayKeyForModel" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.GoodsMaster" >
+    DELETE FROM tb_basic_gdmaster
+    WHERE waresId = #{waresId,jdbcType=VARCHAR}
+  </delete>
+  <select id="getPayObj" resultMap="payMap" parameterType="map" >
+   select * from tb_basic_pay b where b.operatorID=(select v.operatorID from tb_basic_gdmaster v where v.waresId=#{params.waresId} )
+  </select>
+  <select id="findByNumParams" resultMap="BaseResultMap" parameterType="map" >
+     SELECT  
+    <include refid="Base_Column_List" />
+     FROM tb_basic_gdmaster  b WHERE  b.operatorID=(SELECT v.operPartyID from  tb_basic_stafmaster v WHERE v.emplCode=#{params.emplCode}) AND
+           b.barCodeNo=#{params.barCodeNo}  LIMIT 1
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM tb_basic_gdmaster
+    WHERE waresId = #{waresId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" >
+    SELECT  COUNT(1) as s from  tb_basic_gdmaster  c  WHERE  c.operatorID=(SELECT o.operPartyID from tb_basic_stafmaster o WHERE o.emplCode=#{params.emplCode} LIMIT 1)
+    or 1=(SELECT IF(v.position='aa',1,0) from tb_basic_stafmaster v WHERE v.emplCode=#{params.emplCode})   
+    <include refid="condition" />
+  </select>
+  <select id="selectParams" resultMap="BaseResultMap" parameterType="map" >
+  SELECT  c.* from  tb_basic_gdmaster  c  WHERE  c.operatorID=(SELECT o.operPartyID from tb_basic_stafmaster o WHERE o.emplCode=#{params.emplCode} LIMIT 1)
+  or 1=(SELECT IF(v.position='aa',1,0) from tb_basic_stafmaster v WHERE v.emplCode=#{params.emplCode})    
+	<include refid="condition" />
+    order by c.updateTime desc
+  </select>
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+     FROM tb_basic_gdmaster WHERE 1=1 
+    <include refid="condition" />
+  </select>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+     FROM tb_basic_gdmaster WHERE 1=1 
+    <include refid="condition" />
+    order by updateTime desc
+  </select>
+  <insert id="insert" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.GoodsMaster" >
+    INSERT INTO tb_basic_gdmaster (
+        waresId,
+		waresName,
+		waresPrice,
+		waresImage1,
+		waresImage2,
+		starValue,
+		callBackUrl,
+		waresDiscr,
+		quaGuaPeriod,
+		operParty,
+		operatorID,
+		waresSyno,
+		waresCost,
+		actualSelPrice,
+		unitPrice,
+		waresLunchboxModel,
+		theGoodsModel,
+		barCodeNo,
+		heatingTime,
+		supplier,
+		waresType,
+		createTime,
+		createBy,
+		updateTime,
+		updateBy,
+		remark
+    )
+    VALUES (
+	    #{waresId,jdbcType=VARCHAR},
+		#{waresName,jdbcType=VARCHAR},
+		#{waresPrice,jdbcType=DOUBLE},
+		#{waresImage1,jdbcType=VARCHAR},
+		#{waresImage2,jdbcType=VARCHAR},
+		#{starValue,jdbcType=INTEGER},
+		#{callBackUrl,jdbcType=VARCHAR},
+		#{waresDiscr,jdbcType=VARCHAR},
+		#{quaGuaPeriod,jdbcType=INTEGER},
+		#{operParty,jdbcType=VARCHAR},
+		#{operatorID,jdbcType=VARCHAR},
+		#{waresSyno,jdbcType=VARCHAR},
+		#{waresCost,jdbcType=DOUBLE},
+		#{actualSelPrice,jdbcType=DOUBLE},
+		#{unitPrice,jdbcType=VARCHAR},
+		#{waresLunchboxModel,jdbcType=VARCHAR},
+		#{theGoodsModel,jdbcType=VARCHAR},
+		#{barCodeNo,jdbcType=VARCHAR},
+		#{heatingTime,jdbcType=INTEGER},
+		#{supplier,jdbcType=VARCHAR},
+		#{waresType,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{createBy,jdbcType=VARCHAR},
+		#{updateTime,jdbcType=TIMESTAMP},
+		#{updateBy,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR}
+    )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.GoodsMaster" >
+    UPDATE tb_basic_gdmaster
+    SET   
+	        waresId=#{waresId,jdbcType=VARCHAR},
+			waresName=#{waresName,jdbcType=VARCHAR},
+			waresPrice=#{waresPrice,jdbcType=DOUBLE},
+			waresImage1=#{waresImage1,jdbcType=VARCHAR},
+			waresImage2=#{waresImage2,jdbcType=VARCHAR},
+			starValue=#{starValue,jdbcType=INTEGER},
+			callBackUrl=#{callBackUrl,jdbcType=VARCHAR},
+			waresDiscr=#{waresDiscr,jdbcType=VARCHAR},
+			quaGuaPeriod=#{quaGuaPeriod,jdbcType=INTEGER},
+			operParty=#{operParty,jdbcType=VARCHAR},
+			operatorID=#{operatorID,jdbcType=VARCHAR},
+			waresSyno=#{waresSyno,jdbcType=VARCHAR},
+			waresCost=#{waresCost,jdbcType=DOUBLE},
+			actualSelPrice=#{actualSelPrice,jdbcType=DOUBLE},
+			unitPrice=#{unitPrice,jdbcType=VARCHAR},
+			waresLunchboxModel=#{waresLunchboxModel,jdbcType=VARCHAR},
+			theGoodsModel=#{theGoodsModel,jdbcType=VARCHAR},
+			barCodeNo=#{barCodeNo,jdbcType=VARCHAR},
+			heatingTime=#{heatingTime,jdbcType=INTEGER},
+			supplier=#{supplier,jdbcType=VARCHAR},
+			waresType=#{waresType,jdbcType=VARCHAR},
+			createTime=#{createTime,jdbcType=TIMESTAMP},
+			createBy=#{createBy,jdbcType=VARCHAR},
+			updateTime=#{updateTime,jdbcType=TIMESTAMP},
+			updateBy=#{updateBy,jdbcType=VARCHAR},
+			remark=#{remark,jdbcType=VARCHAR}
+	      
+    WHERE waresId = #{waresId,jdbcType=VARCHAR}
+  </update>
+</mapper>

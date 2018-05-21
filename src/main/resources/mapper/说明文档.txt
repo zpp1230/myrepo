@@ -1,0 +1,11 @@
+权限分配模块配置文件  AllotsMapper.xml
+权限值模块配置文件   AuthorMapper.xml
+出货成功配置文件    CallbackPMStateMapper.xml
+设备模块配置文件    DeviceMasterMapper.xml
+商品模块配置文件    GoodsMasterMapper.xml
+登陆模块配置文件    LoginUserMapper.xml
+菜单配置文件        MenuMapper.xml
+订单配置文件        PayOrderMapper.xml
+角色配置文件        RoleMapper.xml
+人员模块配置文件    StaffMasterMapper.xml
+出货状态配置文件    WaresOrderWareidMapper.xml

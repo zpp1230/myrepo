@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.Sppz2Mapper">
+
+       <resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.Sppz2" id="sppz2Map">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		
+		<result column="goods" property="goods" jdbcType="VARCHAR" />
+		
+		<result column="price" property="price" jdbcType="VARCHAR" />
+		
+		<result column="goodsType" property="goodsType" jdbcType="VARCHAR" />
+
+		<result column="number" property="number" jdbcType="VARCHAR" />
+						
+		<result column="machCode" property="machCode" jdbcType="VARCHAR" />
+		
+		<result column="goodsId" property="goodsId" jdbcType="VARCHAR" />
+		
+		<result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+			
+  </resultMap>
+  
+  <select id="getSppz2ByMachCode" resultMap="sppz2Map">
+      select * from tb_business_sppz2 where machCode=#{machCode} and goodsType=#{goodsType}
+  </select>
+  
+  <select id="getSppz2ByGoodType" resultMap="sppz2Map">
+      select * from tb_business_sppz2 where machCode=#{machCode} and goodsType=#{goodsType}
+  </select>
+  
+  <select id="getSppz2ByMachCodeOn" resultMap="sppz2Map">
+      select * from tb_business_sppz2 where machCode=#{machCode}
+  </select>
+   
+   <insert id="save1" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.Sppz2">
+      insert into tb_business_sppz2(goods,price,goodsType,number,machCode,goodsId,updateTime)values(#{goods},#{price},#{goodsType},#{number},#{machCode},#{goodsId},#{updateTime}) 
+   </insert>
+
+  <delete id="deletesSppz2" parameterType="String">
+		delete from tb_business_sppz2 where machCode=#{machCode} and goodsType=#{goodsType}
+  </delete>
+  
+   <delete id="deleteSppz2" parameterType="String">
+		delete from tb_business_sppz2 where machCode=#{machCode}
+  </delete>
+  
+ 
+  
+  <select id="getNum1" resultType="String" parameterType="String">
+        select number from tb_business_sppz2 where machCode=#{machCode} and goodsType='1/4'
+  </select>
+  
+  <select id="getNum2" resultType="String" parameterType="String">
+        select number from tb_business_sppz2 where machCode=#{machCode} and goodsType='1/8'
+  </select>
+  
+  <select id="getNum3" resultType="String" parameterType="String">
+        select number from tb_business_sppz2 where machCode=#{machCode} and goodsType='1/12'
+  </select>
+  
+  <select id="getNumsz1" resultType="String" parameterType="String">
+        select number from tb_business_sppz2 where machCode=#{machCode} and goodsType='100'
+  </select>
+  
+  <select id="getNumsz2" resultType="String" parameterType="String">
+        select number from tb_business_sppz2 where machCode=#{machCode} and goodsType='80'
+  </select>
+  
+  <select id="getNumsz3" resultType="String" parameterType="String">
+        select number from tb_business_sppz2 where machCode=#{machCode} and goodsType='60'
+  </select>
+</mapper>

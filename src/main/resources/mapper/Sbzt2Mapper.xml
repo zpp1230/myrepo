@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.Sbzt2Mapper">
+    <resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.Sbzt2"
+		id="sbzt2Map">
+		<id column="sbztId" property="sbztId" jdbcType="INTEGER" />
+	
+		<result column="startTime" property="startTime" jdbcType="VARCHAR" />	
+		
+		<result column="endTime" property="endTime" jdbcType="VARCHAR" />
+		
+		<result column="start" property="start" jdbcType="VARCHAR" />
+		
+		<result column="end" property="end" jdbcType="VARCHAR" />
+		
+		<result column="more" property="more" jdbcType="VARCHAR" />
+		
+		<result column="machCode" property="machCode" jdbcType="VARCHAR" />
+			
+					
+	</resultMap>
+	
+	<insert id="saveSbzt2" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.Sbzt2">
+		insert into tb_monitor_sbzt2(startTime,endTime,start,end,more,machCode)values(#{startTime},#{endTime},#{start},#{end},#{more},#{machCode})	
+	</insert>
+	
+	<select id="getSbzt2ByMachCode" resultMap="sbzt2Map" parameterType="String">
+		select * from tb_monitor_sbzt2 where machCode=#{machCode}
+	</select>
+	
+	<delete id="deleteSbzt2ByMachCode" parameterType="String">
+	    delete from tb_monitor_sbzt2 where machCode=#{machCode}
+	</delete>
+	
+</mapper>

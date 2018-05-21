@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.Goods1Mapper">
+
+<resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.GoodsMaster" id="goodsMasterMap">
+    <id column="waresId" property="waresId" jdbcType="VARCHAR" />
+    <result column="waresName" property="waresName" jdbcType="VARCHAR" />
+    <result column="waresPrice" property="waresPrice" jdbcType="DOUBLE" />
+    <result column="waresImage1" property="waresImage1" jdbcType="VARCHAR" />
+    <result column="waresImage2" property="waresImage2" jdbcType="VARCHAR" />
+    <result column="starValue" property="starValue" jdbcType="INTEGER" />
+    <result column="callBackUrl" property="callBackUrl" jdbcType="VARCHAR" />
+    <result column="waresDiscr" property="waresDiscr" jdbcType="VARCHAR" />
+    <result column="quaGuaPeriod" property="quaGuaPeriod" jdbcType="INTEGER" />
+    <result column="operParty" property="operParty" jdbcType="VARCHAR"/>
+    <result column="waresSyno" property="waresSyno" jdbcType="VARCHAR" />
+    <result column="waresCost" property="waresCost" jdbcType="DOUBLE" />
+    <result column="actualSelPrice" property="actualSelPrice" jdbcType="DOUBLE" />
+    <result column="unitPrice" property="unitPrice" jdbcType="VARCHAR" />
+    <result column="waresLunchboxModel" property="waresLunchboxModel" jdbcType="VARCHAR" />
+    <result column="theGoodsModel" property="theGoodsModel" jdbcType="VARCHAR" />
+    <result column="barCodeNo" property="barCodeNo" jdbcType="VARCHAR" />
+    <result column="heatingTime" property="heatingTime" jdbcType="INTEGER" />
+    <result column="supplier" property="supplier" jdbcType="VARCHAR" />
+    <result column="waresType" property="waresType" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="createBy" property="createBy" jdbcType="VARCHAR" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="updateBy" property="updateBy" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+     <result column="operatorID" property="operatorID" jdbcType="VARCHAR" />
+  </resultMap>
+  
+ <select id="searchGoods" resultMap="goodsMasterMap">
+		select * from tb_basic_gdmaster where theGoodsModel like '%1/4%'
+		
+			<if test="waresName !=null and waresName !='' ">
+			and	waresName like CONCAT('%',#{waresName},'%')
+			</if>
+			<if test="operatorID !=null and operatorID !='' ">
+			and	operatorID =#{operatorID}
+			</if>
+		
+		order by updateTime desc
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	<select id="searchGoodsby" resultMap="goodsMasterMap">
+		select * from tb_basic_gdmaster where theGoodsModel like '%Aries%'
+		
+			<if test="waresName !=null and waresName !='' ">
+			and	waresName like CONCAT('%',#{waresName},'%')
+			</if>
+			<if test="operatorID !=null and operatorID !='' ">
+			and	operatorID =#{operatorID}
+			</if>
+		
+		order by updateTime desc
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+		
+	
+	<select id="searchGoodssz" resultMap="goodsMasterMap">
+		select * from tb_basic_gdmaster where theGoodsModel like '%100%'
+		
+			<if test="waresName !=null and waresName !='' ">
+			and	waresName like CONCAT('%',#{waresName},'%')
+			</if>
+			<if test="operatorID !=null and operatorID !='' ">
+			and	operatorID =#{operatorID}
+			</if>
+		
+		order by updateTime desc
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	<select id="getTotalssz" parameterType="String" resultType="Long">
+		select count(*) from tb_basic_gdmaster where theGoodsModel like '%100%'
+		
+			<if test="waresName !=null and waresName !='' ">
+			and	waresName like CONCAT('%',#{waresName},'%')
+			</if>
+			<if test="operatorID !=null and operatorID !='' ">
+			and	operatorID =#{operatorID}
+			</if>
+		
+	</select>
+	
+	<select id="getTotalsby" parameterType="String" resultType="Long">
+		select count(*) from tb_basic_gdmaster where theGoodsModel like '%Aries%'
+		
+			<if test="waresName !=null and waresName !='' ">
+			and	waresName like CONCAT('%',#{waresName},'%')
+			</if>
+			<if test="operatorID !=null and operatorID !='' ">
+			and	operatorID =#{operatorID}
+			</if>
+		
+	</select>
+	
+	
+	<select id="searchGoods1sz" resultMap="goodsMasterMap">
+		select * from tb_basic_gdmaster where theGoodsModel like '%80%'
+		
+			<if test="waresName !=null and waresName !='' ">
+			and	waresName like CONCAT('%',#{waresName},'%')
+			</if>
+			<if test="operatorID !=null and operatorID !='' ">
+			and	operatorID =#{operatorID}
+			</if>
+		
+		order by updateTime desc
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	<select id="getTotals1sz" parameterType="String" resultType="Long">
+		select count(*) from tb_basic_gdmaster where theGoodsModel like '%80%'
+		
+			<if test="waresName !=null and waresName !='' ">
+			and	waresName like CONCAT('%',#{waresName},'%')
+			</if>
+			<if test="operatorID !=null and operatorID !='' ">
+			and	operatorID =#{operatorID}
+			</if>		
+	</select>
+	
+	
+	<select id="searchGoods2sz" resultMap="goodsMasterMap">
+		select * from tb_basic_gdmaster where theGoodsModel like '%60%'
+		
+			<if test="waresName !=null and waresName !='' ">
+			and	waresName like CONCAT('%',#{waresName},'%')
+			</if>
+			<if test="operatorID !=null and operatorID !='' ">
+			and	operatorID =#{operatorID}
+			</if>
+		
+		order by updateTime desc
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	<select id="getTotals2sz" parameterType="String" resultType="Long">
+		select count(*) from tb_basic_gdmaster where theGoodsModel like '%60%'
+		
+			<if test="waresName !=null and waresName !='' ">
+			and	waresName like CONCAT('%',#{waresName},'%')
+			</if>
+			<if test="operatorID !=null and operatorID !='' ">
+			and	operatorID =#{operatorID}
+			</if>		
+	</select>
+	
+	
+	
+	<select id="getTotals" parameterType="String" resultType="Long">
+		select count(*) from tb_basic_gdmaster where theGoodsModel like '%1/4%'
+		
+			<if test="waresName !=null and waresName !='' ">
+			and	waresName like CONCAT('%',#{waresName},'%')
+			</if>
+			<if test="operatorID !=null and operatorID !='' ">
+			and	operatorID =#{operatorID}
+			</if>
+		
+	</select>
+	
+	
+	<select id="searchGoods1" resultMap="goodsMasterMap">
+		select * from tb_basic_gdmaster where theGoodsModel like '%1/8%'
+		
+			<if test="waresName !=null and waresName !='' ">
+			and	waresName like CONCAT('%',#{waresName},'%')
+			</if>
+			<if test="operatorID !=null and operatorID !='' ">
+			and	operatorID =#{operatorID}
+			</if>
+		
+		order by updateTime desc
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	<select id="getTotals1" parameterType="String" resultType="Long">
+		select count(*) from tb_basic_gdmaster where theGoodsModel like '%1/8%'
+		
+			<if test="waresName !=null and waresName !='' ">
+			and	waresName like CONCAT('%',#{waresName},'%')
+			</if>
+			<if test="operatorID !=null and operatorID !='' ">
+			and	operatorID =#{operatorID}
+			</if>
+		
+	</select>
+	
+	<select id="searchGoods2" resultMap="goodsMasterMap">
+		select * from tb_basic_gdmaster where theGoodsModel like '%1/12%'
+			<if test="waresName !=null and waresName !='' ">
+			and	waresName like CONCAT('%',#{waresName},'%')
+			</if>
+			<if test="operatorID !=null and operatorID !='' ">
+			and	operatorID =#{operatorID}
+			</if>
+		
+		order by updateTime desc
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	<select id="getTotals2" parameterType="String" resultType="Long">
+		select count(*) from tb_basic_gdmaster where theGoodsModel like '%1/12%'
+		
+			<if test="waresName !=null and waresName !='' ">
+			and	waresName like CONCAT('%',#{waresName},'%')
+			</if>
+			<if test="operatorID !=null and operatorID !='' ">
+			and	operatorID =#{operatorID}
+			</if>	
+	</select>
+	
+	<select id="searchGoodsId" parameterType="String" resultType="String">
+	    select waresId from tb_basic_gdmaster where waresName=#{waresName}
+	</select>
+
+</mapper>

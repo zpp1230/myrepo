@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.JxlMapper">
+
+	<resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.Jxl"
+		id="jxlMap">
+		<id column="jxlId" property="jxlId" jdbcType="INTEGER" />
+
+		<result column="jxlCode" property="jxlCode" jdbcType="VARCHAR" />
+
+		<result column="jxlName" property="jxlName" jdbcType="VARCHAR" />	
+		<result column="changeTime" property="changeTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="addJxl" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.Jxl">
+		insert into
+		tb_basic_jxl(jxlCode,jxlName,changeTime)
+		values
+		(#{jxlCode},#{jxlName},#{changeTime})
+	</insert>
+	
+	<select id="find" resultMap="jxlMap">
+		select * from tb_basic_jxl
+		<where>
+			<if test="jxlName !=null and jxlName !='' ">
+				jxlName like CONCAT('%',#{jxlName},'%')
+			</if>
+		</where>
+		order by changeTime desc
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+
+	<select id="getTotal" parameterType="String" resultType="Long">
+		select count(*) from tb_basic_jxl
+		<where>
+			<if test="jxlName !=null and jxlName !='' ">
+				jxlName like CONCAT('%',#{jxlName},'%')
+			</if>
+		</where>
+	</select>
+	
+	<select id="getJxlByJxlId" resultMap="jxlMap"
+		parameterType="String">
+		select * from tb_basic_jxl where jxlId=#{jxlId}
+	</select>
+	
+	<update id="updateJxl" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.Jxl">
+		update tb_basic_jxl set jxlCode=#{jxlCode},jxlName=#{jxlName},changeTime=#{changeTime} where jxlId=#{jxlId}
+	</update>
+	
+	<delete id="deleteJxl" parameterType="String">
+		delete from tb_basic_jxl where jxlId=#{jxlId}
+	</delete>
+	
+	<!-- <select id="getJxls" resultType="String">
+		select jxlName from tb_basic_jxl
+	</select>
+	
+	<select id="getJxlCode" resultType="String" parameterType="String">
+		select jxlCode from tb_basic_jxl where jxlName=#{jxlName}
+	</select> -->
+
+</mapper>

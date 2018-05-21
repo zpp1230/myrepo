@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.AllotsMapper">
+  <resultMap type="com.cn.jf.backstage.dao.bg_dao.model.Allot" id="allotMap">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="roleId" property="roleId" jdbcType="INTEGER" />
+    <result column="emplCode" property="emplCode" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="getRoleIds" parameterType="String" resultType="Integer">
+        select roleId from tb_auth_allot where emplCode=#{emplCode}
+  </select>
+</mapper>

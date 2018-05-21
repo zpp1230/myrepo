@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.HdpzsMapper">
+
+	<resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.DeviceMaster"
+		id="hdpzsMap">
+		<id column="machCode" property="machCode" jdbcType="VARCHAR" />
+
+		<result column="machName" property="machName" jdbcType="VARCHAR" />
+		
+		<result column="hostIp" property="hostIp" jdbcType="VARCHAR" />
+		
+		<result column="desAddr" property="desAddr" jdbcType="VARCHAR" />
+		
+		<result column="machModel" property="machModel" jdbcType="VARCHAR" />
+		
+		<result column="hostName" property="hostName" jdbcType="VARCHAR" />
+		
+		<result column="storeId" property="storeId" jdbcType="VARCHAR" />
+		
+		<result column="portNum" property="portNum" jdbcType="VARCHAR" />
+		
+		<result column="areaPrefix" property="areaPrefix" jdbcType="VARCHAR" />
+		
+		<result column="routerCode" property="routerCode" jdbcType="VARCHAR" />
+		
+		<result column="macAddr" property="macAddr" jdbcType="VARCHAR" />
+		
+		<result column="monitor" property="monitor" jdbcType="VARCHAR" />
+		
+		<result column="ipc" property="ipc" jdbcType="VARCHAR" />
+		
+		<result column="machType" property="machType" jdbcType="VARCHAR" />
+		
+		<result column="machOwner" property="machOwner" jdbcType="VARCHAR" />
+		
+		<result column="tel" property="tel" jdbcType="VARCHAR" />
+		
+		<result column="cooperationMode" property="cooperationMode" jdbcType="VARCHAR" />
+		
+		<result column="operateCompany" property="operateCompany" jdbcType="VARCHAR" />
+		
+		<result column="useAddr" property="useAddr" jdbcType="VARCHAR" />
+		
+		<result column="PermaintBy" property="PermaintBy" jdbcType="VARCHAR" />
+		
+		<result column="replenishBy" property="replenishBy" jdbcType="VARCHAR" />
+		
+		<result column="createBy" property="createBy" jdbcType="VARCHAR" />
+		
+		<result column="updateBy" property="updateBy" jdbcType="VARCHAR" />
+		
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		
+		<result column="operatorID" property="operatorID" jdbcType="VARCHAR" />
+		
+		<result column="leaseStartTime" property="leaseStartTime" jdbcType="TIMESTAMP" />
+		
+		<result column="leaseExpireTime" property="leaseExpireTime" jdbcType="TIMESTAMP" />
+		
+		<result column="buyTime" property="buyTime" jdbcType="TIMESTAMP" />
+		
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+
+		<result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+		
+		<result column="trouble" property="trouble" jdbcType="VARCHAR" />
+		
+		<result column="matter" property="matter" jdbcType="VARCHAR" />
+		
+		<result column="problem" property="problem" jdbcType="VARCHAR" />
+		
+		<result column="machModelID" property="machModelID" jdbcType="VARCHAR" />
+		
+		
+		
+	</resultMap>
+
+	<select id="find" resultMap="hdpzsMap">
+		select * from tb_basic_devmaster
+		<where>
+			<if test="operateCompany !=null and operateCompany !='' ">
+				operateCompany like CONCAT('%',#{operateCompany},'%')
+			</if>
+			<if test="operatorID !=null and operatorID !='' ">
+			   and	operatorID =#{operatorID}
+			</if>
+		</where>
+		order by updateTime desc
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	<select id="find1" resultMap="hdpzsMap">
+		select * from tb_basic_devmaster
+		<where>
+			<if test="operateCompany !=null and operateCompany !='' ">
+				operateCompany like CONCAT('%',#{operateCompany},'%')
+			</if>
+		</where>
+		order by updateTime desc
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+				
+	<select id="getTotal" parameterType="String" resultType="Long">
+		select count(*) from tb_basic_devmaster
+		<where>
+			<if test="operateCompany !=null and operateCompany !='' ">
+				operateCompany like CONCAT('%',#{operateCompany},'%')
+			</if>
+			<if test="operatorID !=null and operatorID !='' ">
+			   and	operatorID =#{operatorID}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getTotal1" parameterType="String" resultType="Long">
+		select count(*) from tb_basic_devmaster
+		<where>
+			<if test="operateCompany !=null and operateCompany !='' ">
+				operateCompany like CONCAT('%',#{operateCompany},'%')
+			</if>
+		</where>
+	</select>
+
+		
+	
+  <delete id="deleteHdpz" parameterType="String">
+		delete from tb_basic_devmaster where machCode=#{machCode}
+  </delete>
+  
+  <select id="getSbztMachCodeByMacAddr" parameterType="String" resultType="String">
+       select machCode from tb_basic_devmaster where macAddr=#{macAddr}
+  </select>
+  
+  <select id="getSbztMacAddrByMachCode" parameterType="String" resultType="String">
+       select machCode from tb_basic_devmaster where machCode=#{machCode}
+  </select>
+  
+  <select id="getDevMaterByMachCode" parameterType="String" resultMap="hdpzsMap">
+       select * from tb_basic_devmaster where machCode=#{machCode}
+  </select>
+  
+  <update id="updateDevMater" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.DeviceMaster">
+       update tb_basic_devmaster set machCode=#{machCode},machName=#{machName},hostIp=#{hostIp},desAddr=#{desAddr},machModel=#{machModel},hostName=#{hostName},storeId=#{storeId},portNum=#{portNum},areaPrefix=#{areaPrefix},routerCode=#{routerCode},macAddr=#{macAddr},monitor=#{monitor},ipc=#{ipc},machType=#{machType},machOwner=#{machOwner},tel=#{tel},cooperationMode=#{cooperationMode},operateCompany=#{operateCompany},leaseStartTime=#{leaseStartTime},leaseExpireTime=#{leaseExpireTime},buyTime=#{buyTime},useAddr=#{useAddr},PermaintBy=#{PermaintBy},replenishBy=#{replenishBy},createTime=#{createTime},createBy=#{createBy},updateTime=#{updateTime},updateBy=#{updateBy},remark=#{remark},operatorID=#{operatorID},trouble=#{trouble},matter=#{matter},problem=#{problem},machModelID=#{machModelID} where machCode=#{machCode}
+  </update>
+  
+  <update id="deleteMatter" parameterType="String">
+       update tb_basic_devmaster set matter='' where machCode=#{machCode}
+  </update>
+  
+  <update id="deleteMatter1" parameterType="String">
+       update tb_basic_devmaster set problem='' where machCode=#{machCode}
+  </update>
+  
+  <select id="getMatterByMachCode" parameterType="String" resultType="String">
+       select problem from tb_basic_devmaster where machCode=#{machCode}
+  </select>
+  
+  
+  <select id="getsbbh" parameterType="String" resultType="String">
+       select machCode from tb_basic_devmaster where operatorID=#{operatorID} and trouble='是'
+  </select>
+  
+  <select id="getsbbhq" resultType="String">
+       select machCode from tb_basic_devmaster where trouble='是'
+  </select>
+  
+  <select id="getsbbhs" parameterType="String" resultType="String">
+       select machCode from tb_basic_devmaster where operatorID=#{operatorID} and trouble ='否'
+  </select>
+  
+  <select id="getsbbhsq" parameterType="String" resultType="String">
+       select machCode from tb_basic_devmaster where trouble ='否'
+  </select>
+  
+  
+  <select id="getDeviceMaster" parameterType="String" resultMap="hdpzsMap">
+       select * from tb_basic_devmaster where operatorID=#{operatorID}
+  </select>
+  
+  <select id="getAddr" parameterType="String" resultType="String">
+       select useAddr from tb_basic_devmaster where machCode=#{machCode}
+  </select>
+  
+  <select id="getsbbhall" parameterType="String" resultType="String">
+       select machCode from tb_basic_devmaster where operatorID=#{operatorID}
+  </select>
+  
+   <select id="getsbbhallq" resultType="String">
+       select machCode from tb_basic_devmaster
+  </select>
+   
+</mapper>

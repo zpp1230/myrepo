@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.UpdateTimeMapper">
+	<resultMap type="com.cn.jf.backstage.dao.bg_dao.entity.UpdateTime" id="UpdateTimeMap">
+		<id column="comId" property="comId" jdbcType="BIGINT"/>
+        <result column="deviceId" property="deviceId" jdbcType="VARCHAR"/>
+        <result column="goodsId" property="goodsId" jdbcType="VARCHAR"/>
+        <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="updateTimeg" property="updateTimeg" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	
+	<sql id="select_updateTime">
+		select comId,
+		deviceId,
+		goodsId,
+		updateTime,updateTimeg from t_business_updateTime
+	</sql>
+	
+	<select id="findByDev" resultMap="UpdateTimeMap">
+		<include refid="select_updateTime"></include>
+		<where>
+			<if test="deviceId !=null and deviceId !=''">
+				deviceId=#{deviceId}
+			</if>
+		</where>
+	</select>
+	
+	
+	<select id="findByGoodsId" resultMap="UpdateTimeMap">
+		<include refid="select_updateTime"></include>
+		<where>
+			<if test="goodsId !=null and goodsId !=''">
+				goodsId=#{goodsId}
+			</if>
+			<if test="deviceId !=null and deviceId !=''">
+				and deviceId=#{deviceId}
+			</if>
+		</where>
+	</select>
+	
+	
+	
+	<delete id="deleteDevUpdateTime" parameterType="java.lang.String">
+		delete from t_business_updateTime
+		<where>
+			<if test="deviceId !=null and deviceId !=''">
+				deviceId=#{deviceId}
+			</if>
+		</where>
+	</delete>
+	
+	
+	<insert id="addDevUpdateTime" parameterType="com.cn.jf.backstage.dao.bg_dao.entity.UpdateTime">
+		insert into t_business_updateTime (deviceId,
+		goodsId,
+		updateTime,updateTimeg) values (#{deviceId},
+		#{goodsId},#{updateTime},#{updateTimeg})
+	</insert>
+</mapper>

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.jf.backstage.dao.bg_dao.mapper.PayOrderMapper">
+  <resultMap id="BaseResultMap" type="com.cn.jf.backstage.dao.bg_dao.model.PayOrder">
+    <id column="out_trade_no" property="out_trade_no" jdbcType="VARCHAR"/>
+    <result column="transaction_id" property="transaction_id" jdbcType="VARCHAR"/>
+    <result column="fee_type" property="fee_type" jdbcType="VARCHAR"/>
+    <result column="cash_fee" property="cash_fee" jdbcType="DOUBLE"/>
+    <result column="total_fee" property="total_fee" jdbcType="DOUBLE"/>
+    <result column="trade_type" property="trade_type" jdbcType="VARCHAR"/>
+    <result column="openid" property="openid" jdbcType="VARCHAR"/>
+    <result column="macaddress" property="macaddress" jdbcType="VARCHAR"/>
+    <result column="buyer_id" property="buyer_id" jdbcType="VARCHAR"/>
+    <result column="buyer_logon_id" property="buyer_logon_id" jdbcType="VARCHAR"/>
+    <result column="total_amount" property="total_amount" jdbcType="DOUBLE"/>
+    <result column="receipt_amount" property="receipt_amount" jdbcType="DOUBLE"/>
+    <result column="trade_no" property="trade_no" jdbcType="VARCHAR"/>
+    <result column="mark" property="mark" jdbcType="VARCHAR"/>
+    <result column="state" property="state" jdbcType="VARCHAR"/>
+    <result column="waresId" property="waresId" jdbcType="VARCHAR"/>
+    <result column="paymentDate" property="paymentDate" jdbcType="TIMESTAMP"/>
+    <result column="waresName" property="waresName" jdbcType="VARCHAR"/>
+    <result column="goodsType" property="goodsType" jdbcType="VARCHAR"/>
+    <result column="mid" property="mid" jdbcType="VARCHAR"/>
+    <result column="tid" property="tid" jdbcType="VARCHAR"/>
+    <result column="mchntUuid" property="mchntUuid" jdbcType="VARCHAR"/>
+    <result column="totalAmount" property="totalAmount" jdbcType="VARCHAR"/>
+  </resultMap>
+  <resultMap id="BaseResultMap_" type="com.cn.jf.backstage.dao.bg_dao.model.OrderWareId">
+    <id column="id" property="id" jdbcType="INTEGER"/>
+    <result column="out_trade_no" property="out_trade_no" jdbcType="VARCHAR"/>
+    <result column="waresId" property="waresId" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <resultMap id="ReResultMap" type="com.cn.jf.backstage.dao.bg_dao.model.RefundOrder">
+     <id column="out_trade_no" property="out_trade_no" jdbcType="VARCHAR"/>
+    <result column="transaction_id" property="transaction_id" jdbcType="VARCHAR"/>
+    <result column="fee_type" property="fee_type" jdbcType="VARCHAR"/>
+    <result column="macaddress" property="macaddress" jdbcType="VARCHAR"/>
+    <result column="waresId" property="waresId" jdbcType="VARCHAR"/>
+    <result column="mark" property="mark" jdbcType="VARCHAR"/>
+    <result column="refund_fee" property="refund_fee" jdbcType="DOUBLE"/>
+    <result column="trade_no" property="trade_no" jdbcType="VARCHAR"/>
+    <result column="refund_remark" property="refund_remark" jdbcType="VARCHAR"/>
+    <result column="refundDate" property="refundDate" jdbcType="TIMESTAMP"/>
+    <result column="trade_type" property="trade_type" jdbcType="VARCHAR"/>
+    <result column="openid" property="openid" jdbcType="VARCHAR"/>
+    <result column="appid" property="appid" jdbcType="VARCHAR"/>
+    <result column="buyer_id" property="buyer_id" jdbcType="VARCHAR"/>
+    <result column="buyer_logon_id" property="buyer_logon_id" jdbcType="VARCHAR"/>
+    <result column="cargoData" property="cargoData" jdbcType="VARCHAR"/>
+    <result column="machCode" property="machCode" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List">
+	out_trade_no,
+	transaction_id,
+	fee_type,
+	cash_fee,
+	total_fee,
+	trade_type,
+	openid,
+	appid,
+	macaddress,
+	buyer_id,
+	buyer_logon_id,
+	total_amount,
+	receipt_amount,
+	trade_no,
+	mark,
+	state,
+    waresId,
+    paymentDate,
+    waresName,
+    goodsType,
+    mid,
+    tid,
+    mchntUuid,
+    totalAmount
+  </sql>
+  <sql id="condition">
+  	<if test="null!=params.out_trade_no and ''!=params.out_trade_no">
+  		and out_trade_no like concat('%',#{params.out_trade_no},'%')
+  	</if>
+  </sql>
+  <select id="selectCount" resultType="java.lang.Integer">
+    SELECT COUNT(1) as s FROM tb_pm_payorder WHERE 1=1 
+    <include refid="condition"/>
+  </select>
+  <select id="selectParams" resultMap="BaseResultMap" parameterType="map">
+    SELECT 
+    <include refid="Base_Column_List"/>
+       FROM tb_pm_payorder WHERE 1=1 
+    <include refid="condition"/>
+    
+  </select>
+  
+  <insert id="insert_pm_wares" parameterType="com.cn.jf.backstage.dao.bg_dao.model.OrderWareId">
+    INSERT INTO tb_pm_wares_orderwareid(
+	    out_trade_no,
+		waresId
+    )
+    VALUES(
+	    #{out_trade_no,jdbcType=VARCHAR},
+	    #{waresId,jdbcType=VARCHAR}
+    )
+  </insert>
+  
+  
+  <insert id="insert_pm_refund" parameterType="com.cn.jf.backstage.dao.bg_dao.model.RefundOrder">
+    INSERT INTO tb_pm_refundorder(
+	    out_trade_no,
+		transaction_id,
+		fee_type,
+		macaddress,
+		trade_no,
+		mark,
+		waresId,
+		refund_fee,
+		refund_remark,
+		refundDate,
+		trade_type,
+		openid,
+		appid,
+		buyer_id,
+		buyer_logon_id,
+		cargoData,
+		machCode
+    )
+    VALUES(
+	    #{out_trade_no,jdbcType=VARCHAR},
+	    #{transaction_id,jdbcType=VARCHAR},
+	    #{fee_type,jdbcType=VARCHAR},
+	    #{macaddress,jdbcType=VARCHAR},
+	    #{trade_no,jdbcType=VARCHAR},
+	    #{mark,jdbcType=VARCHAR},
+	    #{waresId,jdbcType=VARCHAR},
+	    #{refund_fee,jdbcType=DOUBLE},
+	    #{refund_remark,jdbcType=DOUBLE},
+	    #{refundDate,jdbcType=TIMESTAMP},
+	    #{trade_type,jdbcType=VARCHAR},
+	    #{openid,jdbcType=VARCHAR},
+	    #{appid,jdbcType=VARCHAR},
+	    #{buyer_id,jdbcType=VARCHAR},
+	    #{buyer_logon_id,jdbcType=VARCHAR},
+	    #{cargoData,jdbcType=VARCHAR},
+	    #{machCode,jdbcType=VARCHAR}
+    )
+  </insert>
+  
+  
+  <insert id="insert" parameterType="com.cn.jf.backstage.dao.bg_dao.model.PayOrder">
+    INSERT INTO tb_pm_payorder(
+	    out_trade_no,
+		transaction_id,
+		fee_type,
+		cash_fee,
+		total_fee,
+		trade_type,
+		openid,
+		appid,
+		macaddress,
+		buyer_id,
+		buyer_logon_id,
+		total_amount,
+		receipt_amount,
+		trade_no,
+		mark,
+	    state,
+	    waresId,
+	    paymentDate,
+	    waresName,
+	    goodsType,
+		mid,
+	    tid,
+	    mchntUuid,
+	    totalAmount
+    )
+    VALUES(
+	    #{out_trade_no,jdbcType=VARCHAR},
+	    #{transaction_id,jdbcType=VARCHAR},
+	    #{fee_type,jdbcType=VARCHAR},
+	    #{cash_fee,jdbcType=DOUBLE},
+	    #{total_fee,jdbcType=DOUBLE},
+	    #{trade_type,jdbcType=VARCHAR},
+	    #{openid,jdbcType=VARCHAR},
+	    #{appid,jdbcType=VARCHAR},
+	    #{macaddress,jdbcType=VARCHAR},
+	    #{buyer_id,jdbcType=VARCHAR},
+	    #{buyer_logon_id,jdbcType=VARCHAR},
+	    #{total_amount,jdbcType=DOUBLE},
+	    #{receipt_amount,jdbcType=DOUBLE},
+	    #{trade_no,jdbcType=VARCHAR},
+	    #{mark,jdbcType=VARCHAR},
+	    #{state,jdbcType=VARCHAR},
+	    #{waresId,jdbcType=VARCHAR},
+	    #{paymentDate,jdbcType=TIMESTAMP},
+	    #{waresName,jdbcType=VARCHAR},
+	    #{goodsType,jdbcType=VARCHAR},
+	    #{mid,jdbcType=VARCHAR},
+	    #{tid,jdbcType=VARCHAR},
+	    #{mchntUuid,jdbcType=VARCHAR},
+	    #{totalAmount,jdbcType=VARCHAR}
+    )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="map">
+    UPDATE tb_pm_payorder
+    SET   
+		state=#{params.state,jdbcType=VARCHAR}
+    WHERE out_trade_no = #{params.out_trade_no,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateByPrimaryCargo" parameterType="map">
+    UPDATE tb_pm_payorder
+    SET   
+		goodsType=#{params.goodsType,jdbcType=VARCHAR}
+    WHERE out_trade_no = #{params.out_trade_no,jdbcType=VARCHAR}
+  </update>
+</mapper>
